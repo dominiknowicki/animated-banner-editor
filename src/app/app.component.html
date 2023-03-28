@@ -1,40 +1,4 @@
-<div class="container">
-  <div class="row">
+<app-titlebar></app-titlebar>
+<app-params (paramEmitter)="onParamEmitted($event)"></app-params>
+<app-playground [params]="receivedParams"></app-playground>
 
-    <div class="" style="margin: 60px auto; max-width: 1200px; background: white; padding: 50px 30px">
-      <div style="display: block; max-width: 50%;">
-        <h3>EXAMPLE 1: Fixed size | noloop</h3>
-        <div>
-          <animated-banner-component
-            animation="slide-in-from-left"
-            background="url('assets/media/corrollaHatchback-1000x500.jpg')"
-            color="red"
-            height="250"
-            text="Nowa Corolla GR"
-            text-position="top"
-            width="500"
-          ></animated-banner-component>
-        </div>
-      </div>
-      <hr>
-      <div style="display: block; max-width: 40%;">
-        <h3>EXAMPLE 2: Adjust to parent width | loop</h3>
-        <div>
-          <animated-banner-component
-            animation="slide-right"
-            autosize="true"
-            background="url('assets/media/corollaSedan_1000x750.jpg')"
-            color="#aaa"
-            font-size="18"
-            height="750"
-            loop="true"
-            text="Wyprzedaż rocznika 2022"
-            text-position="bottom"
-            width="1000"
-          ></animated-banner-component>
-        </div>
-      </div>
-    </div>
-  </div>
-
-</div>

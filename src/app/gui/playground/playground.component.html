@@ -1,0 +1,16 @@
+<div class="playground-container">
+  <div *ngIf="params" style="display: block; max-width: 40%;">
+    <animated-banner-component
+      animation="{{params.animation}}"
+      autosize="true"
+      background="{{params.background}}"
+      color="#aaa"
+      font-size="18"
+      height="750"
+      loop="true"
+      text="{{params.text}}"
+      text-position="{{params.textPosition}}"
+      width="1000"
+    ></animated-banner-component>
+  </div>
+</div>

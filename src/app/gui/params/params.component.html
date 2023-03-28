@@ -1,0 +1,36 @@
+<mat-form-field appearance="outline">
+  <mat-label>Animation</mat-label>
+  <mat-select [(ngModel)]="params.animation" (ngModelChange)="onUpdate()">
+    <mat-option value="slide-right">slide-right</mat-option>
+    <mat-option value="slide-in-from-left">slide-in-from-left</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<mat-form-field appearance="outline">
+  <mat-label>Text</mat-label>
+  <input matInput [(ngModel)]="params.text" (ngModelChange)="onUpdate()">
+</mat-form-field>
+
+<mat-form-field appearance="outline">
+  <mat-label>Position</mat-label>
+  <mat-select [(ngModel)]="params.textPosition" (ngModelChange)="onUpdate()">
+    <mat-option value="top">Top</mat-option>
+    <mat-option value="middle">Middle</mat-option>
+    <mat-option value="bottom">Bottom</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<mat-form-field appearance="outline">
+  <mat-label>Background</mat-label>
+  <mat-select [(ngModel)]="params.background" (ngModelChange)="onUpdate()">
+    <mat-option value="url('assets/media/corollaSedan_1000x750.jpg')">Toyota Sedan</mat-option>
+    <mat-option value="url('assets/media/corollaHatchback_1000x500.jpg')">Toyota Hatchback</mat-option>
+    <mat-option value="white">White</mat-option>
+    <mat-option value="grey">Grey</mat-option>
+    <mat-option value="black">Black</mat-option>
+    <mat-option [disabled]>Choose color</mat-option>
+    <mat-option [disabled]>Upload background</mat-option>
+  </mat-select>
+</mat-form-field>
+
+
