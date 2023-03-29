@@ -1,16 +1,20 @@
 <div class="playground-container">
-  <div *ngIf="params" style="display: block; max-width: 40%;">
-    <animated-banner-component
-      animation="{{params.animation}}"
-      autosize="true"
-      background="{{params.background}}"
-      color="#aaa"
-      font-size="18"
-      height="750"
-      loop="true"
-      text="{{params.text}}"
-      text-position="{{params.textPosition}}"
-      width="1000"
-    ></animated-banner-component>
-  </div>
+  <animated-banner-component
+    *ngIf="params && _reloaded"
+    animation="{{params.animation}}"
+    autosize="true"
+    background="{{params.background}}"
+    color="{{params.color}}"
+    font-size="18"
+    height="750"
+    loop="{{params.animation === 'slide-right' ? 'true' : 'false'}}"
+    text="{{params.text}}"
+    text-position="bottom"
+    width="1000"
+  ></animated-banner-component>
 </div>
+<app-params
+  [style.right]="showParams ? '0' : ' -400px'"
+  (paramEmitter)="onParamEmitted($event)"
+></app-params>
+

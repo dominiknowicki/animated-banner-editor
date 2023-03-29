@@ -1,4 +1,7 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core'
+import {DEFAULT_PARAMS} from "../../model/params"
+import {MatDialog} from '@angular/material/dialog'
+import {ShowCodeDialog} from "../show-code-dialog/show-code-dialog.component"
 
 @Component({
   selector: 'app-params',
@@ -6,22 +9,26 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
   styleUrls: ['./params.component.scss']
 })
 export class ParamsComponent implements OnInit {
-  @Output() paramEmitter = new EventEmitter<object>();
-  public params: any
+  @Output() paramEmitter = new EventEmitter<object>()
+  public params = DEFAULT_PARAMS
 
-  onUpdate() {
-    this.paramEmitter.emit(this.params);
+  constructor(public dialog: MatDialog) {
   }
 
   ngOnInit(): void {
-    this.params = {
-      animation: "slide-right",
-      background: "url('assets/media/corollaSedan_1000x750.jpg')",
-      color: "#aaa",
-      fontSize: "18",
-      loop: "true",
-      text: "Wyprzedaż rocznika 2022",
-      textPosition: "bottom"
-    }
+    setTimeout(() => this.onUpdate())
+  }
+
+  onUpdate(): void {
+    this.paramEmitter.emit(this.params)
+  }
+
+  openShowCodeDialog(): void {
+    this.dialog.open(ShowCodeDialog, {
+      width: '50vw',
+      enterAnimationDuration: 0,
+      exitAnimationDuration: 0,
+    })
   }
 }
+

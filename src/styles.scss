@@ -2,3 +2,8 @@
 
 html, body { height: 100vh; max-height: 100vh; overflow: hidden}
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.mat-mdc-form-field-type-mat-input,
+.mat-mdc-form-field-type-mat-select {
+  width: 100% !important;
+}

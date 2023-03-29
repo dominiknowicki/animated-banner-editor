@@ -1,4 +1,2 @@
-<app-titlebar></app-titlebar>
-<app-params (paramEmitter)="onParamEmitted($event)"></app-params>
-<app-playground [params]="receivedParams"></app-playground>
-
+<app-titlebar (drawerVisibilityEmitter)="onDrawerVisibilityEmitted($event)"></app-titlebar>
+<app-playground [showParams]="showDrawer"></app-playground>

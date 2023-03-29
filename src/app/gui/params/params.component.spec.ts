@@ -1,23 +1,23 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing'
 
-import { ParamsComponent } from './params.component';
+import { ParamsComponent } from './params.component'
 
 describe('ParamsComponent', () => {
-  let component: ParamsComponent;
-  let fixture: ComponentFixture<ParamsComponent>;
+  let component: ParamsComponent
+  let fixture: ComponentFixture<ParamsComponent>
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ ParamsComponent ]
     })
-    .compileComponents();
+    .compileComponents()
 
-    fixture = TestBed.createComponent(ParamsComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    fixture = TestBed.createComponent(ParamsComponent)
+    component = fixture.componentInstance
+    fixture.detectChanges()
+  })
 
   it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+    expect(component).toBeTruthy()
+  })
+})
