@@ -1,5 +1,5 @@
 /**
- * Animation Slide In From Left 0.0.7
+ * Animation Slide In From Left 0.0.8
  */
 window.addEventListener('slide-in-from-left', (event) => {
   abSlideInFromLeft(event.detail.canvas, event.detail.params);
@@ -12,12 +12,14 @@ export function abSlideInFromLeft(canvas, params) {
 }
 class ABSlideInFromLeft {
   constructor(canvas, params) {
+    this.canvasWidth = 0;
+    this.canvasHeight = 0;
     this.defaultTextX = 0;
     this.textX = 0;
     this.textY = 0;
-    this.canvasWidth = 0;
-    this.canvasHeight = 0;
     this.canvas = canvas;
+    this.canvasWidth = this.canvas.clientWidth;
+    this.canvasHeight = this.canvas.clientHeight;
     this.ctx = this.canvas.getContext('2d');
     this.text = params.text;
     this.textPosition = params.textPosition;
@@ -27,19 +29,19 @@ class ABSlideInFromLeft {
     this.defaultTextX = -this.canvas.clientWidth;
     this.textX = this.defaultTextX;
     this.textY = this.getTextY();
-    this.canvasWidth = this.canvas.clientWidth;
-    this.canvasHeight = this.canvas.clientHeight;
   }
   animate() {
     this.setup();
     this.runAnimation();
   }
   get endReached() {
-    return this.textX > 10;
+    return this.textX > 20;
   }
   setup() {
-    this.ctx.font = `${this.fontSize}px Arial`;
+    this.ctx.font = `${this.fontSize}px Arial Black`;
     this.ctx.fillStyle = this.color;
+    this.ctx.textAlign = 'start';
+    this.ctx.textBaseline = 'middle';
   }
   runAnimation() {
     this.textX += 2;
@@ -54,13 +56,14 @@ class ABSlideInFromLeft {
     requestAnimationFrame(this.runAnimation.bind(this));
   }
   drawFrame() {
-    this.ctx.clearRect(0, 0, this.canvasWidth + 10, this.canvasHeight + 10);
+    this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
     this.ctx.fillText(this.text, this.textX, this.textY);
   }
+  //TODO: could be passed as % of canvas
   getTextY() {
     switch (this.textPosition) {
       case 'top':
-        return this.fontSize * 2;
+        return this.fontSize;
       case 'bottom':
         return this.canvas.height - this.fontSize;
       default:
