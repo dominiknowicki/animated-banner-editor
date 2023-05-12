@@ -18,7 +18,7 @@
     <mat-option value="black">black</mat-option>
     <mat-option value="white">white</mat-option>
     <mat-option value="#666">gray</mat-option>
-    <mat-option [disabled]>choose color</mat-option>
+    <mat-option value="customColor">custom color</mat-option>
   </mat-select>
 </mat-form-field>
 
@@ -38,9 +38,19 @@
     <mat-option value="url('assets/media/corollaHatchback_1000x750.jpg')">Corolla Hatchback</mat-option>
     <mat-option value="url('assets/media/yarsCross_1000x750.jpg')">Yaris Cross</mat-option>
     <mat-option value="white">white</mat-option>
-    <mat-option [disabled]>choose color</mat-option>
-    <mat-option [disabled]>upload background</mat-option>
+    <mat-option value="customColor">custom color</mat-option>
+    <mat-option value="customBackground">custom background</mat-option>
   </mat-select>
 </mat-form-field>
+
+
+
+  <input type="file" (change)="previewImage($event)">
+
+
+<div *ngIf="selectedImage">
+  <h2>Image Preview:</h2>
+  <img [src]="selectedImage" alt="Image Preview">
+</div>
 
 <button mat-flat-button color="accent" (click)="openShowCodeDialog()">Show code</button>
