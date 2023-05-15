@@ -1,10 +1,34 @@
 <h1 mat-dialog-title>How to implement</h1>
 <div mat-dialog-content>
-  <p>Here you will find a code ready to use on your webpage:</p>
-  <mat-form-field disabled appearance="outline">
-    <mat-label></mat-label>
-    <textarea disabled matInput></textarea>
-  </mat-form-field>
+  <mat-tab-group>
+    <mat-tab label="Params">
+      <hr/>
+      <h3>Params to be provided to the Animation Banner webcomponent:</h3>
+      <mat-form-field disabled appearance="outline">
+        <textarea style="min-height: 400px" disabled matInput>
+            {{getTab1Text()}}
+        </textarea>
+      </mat-form-field>
+    </mat-tab>
+    <mat-tab label="Javascript">
+      <hr/>
+      <h3>Steps to implement in plain Javascript:</h3>
+      <mat-form-field disabled appearance="outline">
+        <textarea style="min-height: 400px" disabled matInput>
+            {{getTab2Text()}}
+        </textarea>
+      </mat-form-field>
+    </mat-tab>
+    <mat-tab disabled="disabled" label="Angular">
+      <h2>How to implement in Angular</h2>
+    </mat-tab>
+    <mat-tab disabled="disabled" label="React">
+      <h2>How to implement in React</h2>
+    </mat-tab>
+    <mat-tab disabled="disabled" label="Vue">
+      <h2>How to implement in Vue</h2>
+    </mat-tab>
+  </mat-tab-group>
 </div>
 <div mat-dialog-content>
   <button mat-flat-button color="accent" mat-dialog-close>Ok</button>

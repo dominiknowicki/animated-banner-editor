@@ -44,12 +44,11 @@ export class ParamsComponent implements OnInit {
     return updatedParams
   }
 
-  onFileUpload (event: any) {
+  onFileUpload(event: any) {
     const file = event.target.files[0]
     const reader = new FileReader()
     reader.onload = () => {
-      // TODO: set canvas width and height to image width and height
-      console.log('reader.result', reader.result)
+      // TODO: set canvas width and height to image width and height?
       this.customBackgroundImage = reader.result as string
       this.onUpdate()
     }
@@ -61,10 +60,16 @@ export class ParamsComponent implements OnInit {
   }
 
   openShowCodeDialog(): void {
+    const paramsToDisplay = this.applyCustomParams(this.params)
+    if (paramsToDisplay.background.includes('url')) {
+      paramsToDisplay.background = 'url(path/to/your/image)'
+    }
+
     this.dialog.open(ShowCodeDialog, {
       width: '50vw',
       enterAnimationDuration: 0,
       exitAnimationDuration: 0,
+      data: paramsToDisplay
     })
   }
 }
