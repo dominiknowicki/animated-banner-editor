@@ -8,6 +8,10 @@ import {MatSidenavModule} from "@angular/material/sidenav"
 import {MatFormFieldModule} from "@angular/material/form-field"
 import {MatInputModule} from "@angular/material/input"
 import {MatDialogModule} from "@angular/material/dialog"
+import {MatTooltipModule} from "@angular/material/tooltip";
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import {MatSliderModule} from "@angular/material/slider";
+import {MatTabsModule} from "@angular/material/tabs";
 
 @NgModule({
   declarations: [],
@@ -22,6 +26,10 @@ import {MatDialogModule} from "@angular/material/dialog"
     MatInputModule,
     MatSelectModule,
     MatDialogModule,
+    MatTooltipModule,
+    MatSlideToggleModule,
+    MatSliderModule,
+    MatTabsModule,
   ],
   exports: [
     CommonModule,
@@ -34,6 +42,10 @@ import {MatDialogModule} from "@angular/material/dialog"
     MatInputModule,
     MatSelectModule,
     MatDialogModule,
+    MatTooltipModule,
+    MatSlideToggleModule,
+    MatSliderModule,
+    MatTabsModule,
   ]
 })
 export class MaterialModule {

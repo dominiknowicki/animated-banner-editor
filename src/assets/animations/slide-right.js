@@ -1,5 +1,5 @@
 /**
- * Animation Slide Right 0.0.8
+ * Animation Slide Right 0.0.9
  */
 window.addEventListener('slide-right', (event) => {
   abSlideRight(event.detail.canvas, event.detail.params);
@@ -22,10 +22,10 @@ class ABSlideRight {
     this.canvasHeight = this.canvas.clientHeight;
     this.ctx = this.canvas.getContext('2d');
     this.text = params.text;
-    this.textPosition = params.textPosition;
+    this.textposition = params.textposition;
     this.color = params.color;
-    this.fontSize = params.fontSize;
-    this.loop = params.loop;
+    this.fontsize = params.fontsize;
+    this.loop = true; // TODO: temporary override
     this.defaultTextX = -75; // TODO: calculate this
     this.textX = this.defaultTextX;
     this.textY = this.getTextY();
@@ -38,7 +38,7 @@ class ABSlideRight {
     return this.textX > this.canvasWidth;
   }
   setup() {
-    this.ctx.font = `${this.fontSize}px Arial Black`;
+    this.ctx.font = `${this.fontsize}px Arial Black`;
     this.ctx.fillStyle = this.color;
     this.ctx.textAlign = 'center';
     this.ctx.textBaseline = 'middle';
@@ -59,15 +59,14 @@ class ABSlideRight {
     this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
     this.ctx.fillText(this.text, this.textX, this.textY);
   }
-  //TODO: could be passed as % of canvas
   getTextY() {
-    switch (this.textPosition) {
+    switch (this.textposition) {
       case 'top':
-        return this.fontSize;
+        return this.fontsize;
       case 'bottom':
-        return this.canvas.height - this.fontSize;
+        return this.canvas.height - this.fontsize;
       default:
-        return this.canvas.height / 2;
+        return (this.canvas.height + this.fontsize) / 2;
     }
   }
 }
