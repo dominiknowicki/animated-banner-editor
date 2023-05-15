@@ -9,7 +9,7 @@ import {ParamsComponent} from "./gui/params/params.component"
 import {PlaygroundComponent} from "./gui/playground/playground.component"
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations"
 import {ShowCodeDialog} from './gui/show-code-dialog/show-code-dialog.component'
-
+import {NgxColorsModule} from "ngx-colors"
 
 @NgModule({
   declarations: [
@@ -24,7 +24,8 @@ import {ShowCodeDialog} from './gui/show-code-dialog/show-code-dialog.component'
     FormsModule,
     HttpClientModule,
     MaterialModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    NgxColorsModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [],

@@ -1,5 +1,5 @@
 /**
- * Animation Slide In From Left 0.0.8
+ * Animation Slide In From Left 0.0.9
  */
 window.addEventListener('slide-in-from-left', (event) => {
   abSlideInFromLeft(event.detail.canvas, event.detail.params);
@@ -22,10 +22,10 @@ class ABSlideInFromLeft {
     this.canvasHeight = this.canvas.clientHeight;
     this.ctx = this.canvas.getContext('2d');
     this.text = params.text;
-    this.textPosition = params.textPosition;
+    this.textposition = params.textposition;
     this.color = params.color;
-    this.fontSize = params.fontSize;
-    this.loop = params.loop;
+    this.fontsize = params.fontsize;
+    this.loop = false; // TODO: temporary override
     this.defaultTextX = -this.canvas.clientWidth;
     this.textX = this.defaultTextX;
     this.textY = this.getTextY();
@@ -35,12 +35,12 @@ class ABSlideInFromLeft {
     this.runAnimation();
   }
   get endReached() {
-    return this.textX > 20;
+    return this.textX > this.canvasWidth / 2;
   }
   setup() {
-    this.ctx.font = `${this.fontSize}px Arial Black`;
+    this.ctx.font = `${this.fontsize}px Arial Black`;
     this.ctx.fillStyle = this.color;
-    this.ctx.textAlign = 'start';
+    this.ctx.textAlign = 'center';
     this.ctx.textBaseline = 'middle';
   }
   runAnimation() {
@@ -59,15 +59,14 @@ class ABSlideInFromLeft {
     this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
     this.ctx.fillText(this.text, this.textX, this.textY);
   }
-  //TODO: could be passed as % of canvas
   getTextY() {
-    switch (this.textPosition) {
+    switch (this.textposition) {
       case 'top':
-        return this.fontSize;
+        return this.fontsize;
       case 'bottom':
-        return this.canvas.height - this.fontSize;
+        return this.canvas.height - this.fontsize;
       default:
-        return (this.canvas.height + this.fontSize) / 2;
+        return (this.canvas.height + this.fontsize) / 2;
     }
   }
 }

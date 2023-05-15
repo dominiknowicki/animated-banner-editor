@@ -1,3 +1,8 @@
+<h4 matTooltip="Params of component - common for all animations">
+  Component params
+  <mat-icon aria-hidden="false" class="tooltip-icon" aria-label="Params of component - common for all animations"
+            fontIcon="information"></mat-icon>
+</h4>
 <mat-form-field appearance="outline">
   <mat-label>Animation</mat-label>
   <mat-select [(ngModel)]="params.animation" (ngModelChange)="onUpdate()">
@@ -12,19 +17,81 @@
   <input matInput [(ngModel)]="params.text" (ngModelChange)="onUpdate()">
 </mat-form-field>
 
-<mat-form-field appearance="outline">
-  <mat-label>Text color</mat-label>
-  <mat-select [(ngModel)]="params.color" (ngModelChange)="onUpdate()">
-    <mat-option value="black">black</mat-option>
-    <mat-option value="white">white</mat-option>
-    <mat-option value="#666">gray</mat-option>
-    <mat-option value="customColor">custom color</mat-option>
-  </mat-select>
-</mat-form-field>
+
+<div class="flex-controls-container">
+  <mat-form-field appearance="outline" style="max-width: 100px">
+    <mat-label>Width</mat-label>
+    <input matInput type="number" [(ngModel)]="params.width" (ngModelChange)="onUpdate()">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" style="max-width: 100px">
+    <mat-label>Height</mat-label>
+    <input matInput type="number" [(ngModel)]="params.height" (ngModelChange)="onUpdate()">
+  </mat-form-field>
+
+  <div class="compound-param-container" style="max-width: 100px">
+    <mat-label class="mat-slide-toggle-label">Autosize</mat-label>
+    <mat-slide-toggle
+      [(ngModel)]="params.autosize"
+      (ngModelChange)="onUpdate()">
+    </mat-slide-toggle>
+  </div>
+</div>
+
+<!--// TODO read height/width form file-->
+
+<div class="compound-param-container ">
+  <mat-form-field appearance="outline">
+    <mat-label>Background</mat-label>
+    <mat-select [(ngModel)]="params.background" (ngModelChange)="onUpdate()">
+      <mat-option value="url('assets/media/corollaSedan_1000x750.jpg')">Corolla Sedan</mat-option>
+      <mat-option value="url('assets/media/corollaHatchback_1000x750.jpg')">Corolla Hatchback</mat-option>
+      <mat-option value="url('assets/media/yarsCross_1000x750.jpg')">Yaris Cross</mat-option>
+      <mat-option value="white">white</mat-option>
+      <mat-option value="customBackgroundColor">custom color</mat-option>
+      <mat-option value="customBackgroundImage">custom background</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <ngx-colors
+    *ngIf="params.background === 'customBackgroundColor'"
+    class="compound-param-child" ngx-colors-trigger
+    [(ngModel)]="customBackgroundColor" (ngModelChange)="onUpdate()">
+  </ngx-colors>
+  <label *ngIf="params.background === 'customBackgroundImage'"
+         class="no-margin compound-param-child custom-file-upload">
+    <input type="file" (change)="onFileUpload($event)">
+    Choose file
+  </label>
+  <!--  TODO: update button label to a file name-->
+</div>
+
+<h4 matTooltip="Params of animation - can be different for each animation">
+  Animation params
+  <mat-icon aria-hidden="false" class="tooltip-icon"
+            aria-label="Params of animation - can be different for each animation" fontIcon="information"></mat-icon>
+</h4>
+<!--TODO read available params from an animation file with eg. gerParam() function that is implemented by AnimatorInterface-->
+<div class="compound-param-container ">
+  <mat-form-field appearance="outline">
+    <mat-label>Text color</mat-label>
+    <mat-select [(ngModel)]="params.color" (ngModelChange)="onUpdate()">
+      <mat-option value="black">black</mat-option>
+      <mat-option value="white">white</mat-option>
+      <mat-option value="#666">gray</mat-option>
+      <mat-option value="customColor">custom color
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <ngx-colors
+    *ngIf="params.color === 'customColor'"
+    class="compound-param-child" ngx-colors-trigger
+    [(ngModel)]="customColor" (ngModelChange)="onUpdate()">
+  </ngx-colors>
+</div>
 
 <mat-form-field appearance="outline">
   <mat-label>Text position</mat-label>
-  <mat-select disabled [(ngModel)]="params.textPosition" (ngModelChange)="onUpdate()">
+  <mat-select [(ngModel)]="params.textposition" (ngModelChange)="onUpdate()">
     <mat-option value="top">top</mat-option>
     <mat-option value="middle">middle</mat-option>
     <mat-option value="bottom">bottom</mat-option>
@@ -32,25 +99,21 @@
 </mat-form-field>
 
 <mat-form-field appearance="outline">
-  <mat-label>Background</mat-label>
-  <mat-select [(ngModel)]="params.background" (ngModelChange)="onUpdate()">
-    <mat-option value="url('assets/media/corollaSedan_1000x750.jpg')">Corolla Sedan</mat-option>
-    <mat-option value="url('assets/media/corollaHatchback_1000x750.jpg')">Corolla Hatchback</mat-option>
-    <mat-option value="url('assets/media/yarsCross_1000x750.jpg')">Yaris Cross</mat-option>
-    <mat-option value="white">white</mat-option>
-    <mat-option value="customColor">custom color</mat-option>
-    <mat-option value="customBackground">custom background</mat-option>
-  </mat-select>
+  <mat-label>Font size</mat-label>
+  <input matInput type="number" [(ngModel)]="params.fontsize" (ngModelChange)="onUpdate()">
 </mat-form-field>
 
+<!--TODO: rethink the loop param, maybe it should be a part of animation specific not a param, or a param of specific animations only-->
+<!--<div class="compound-param-container ">-->
+<!--  <mat-slide-toggle-->
+<!--    [(ngModel)]="params.loop"-->
+<!--    (ngModelChange)="onUpdate()">-->
+<!--    Loop animation-->
+<!--  </mat-slide-toggle>-->
+<!--  <button style="position: relative; right:0" mat-flat-button (click)="restartAnimation()">Restart</button>-->
+<!--</div>-->
 
-
-  <input type="file" (change)="previewImage($event)">
-
-
-<div *ngIf="selectedImage">
-  <h2>Image Preview:</h2>
-  <img [src]="selectedImage" alt="Image Preview">
+<div class="flex-controls-container">
+  <button mat-flat-button color="accent" (click)="openShowCodeDialog()">Show code</button>
+  <button style="position: relative; right:0" mat-flat-button (click)="restartAnimation()">Restart</button>
 </div>
-
-<button mat-flat-button color="accent" (click)="openShowCodeDialog()">Show code</button>

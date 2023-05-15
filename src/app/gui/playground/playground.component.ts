@@ -8,7 +8,6 @@ import {Component, Input} from '@angular/core'
 export class PlaygroundComponent {
   @Input() showParams: boolean
 
-  // TODO: refactor change detection!
   _reloaded = true
   params = null
 
@@ -17,12 +16,10 @@ export class PlaygroundComponent {
     this.reload()
   }
 
-  getTextPosition(): string {
-    const tp = this.params?.textPosition || 'middle'
-    console.log('textPosition', tp)
-    return tp
-  }
-
+  /**
+   * Reloads the component into playground, required for autosize to work properly
+   * @private
+   */
   private reload(): void {
     setTimeout(() => this._reloaded = false)
     setTimeout(() => this._reloaded = true)

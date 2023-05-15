@@ -2,15 +2,15 @@
   <animated-banner-component
     *ngIf="params && _reloaded"
     animation="{{params.animation}}"
-    autosize="true"
+    autosize="{{params.autosize}}"
     background="{{params.background}}"
     color="{{params.color}}"
-    font-size="18"
-    height="750"
-    loop="{{params.animation === 'slide-right' ? 'true' : 'false'}}"
+    fontsize="{{params.fontsize}}"
+    height="{{params.height}}"
+    loop="{{params.loop}}"
     text="{{params.text}}"
-    text-position="bottom"
-    width="1000"
+    textposition="{{params.textposition}}"
+    width="{{params.width}}"
   ></animated-banner-component>
 </div>
 <app-params

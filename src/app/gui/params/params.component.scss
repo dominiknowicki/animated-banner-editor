@@ -12,4 +12,50 @@
   z-index: 0;
   padding: 20px;
   transition: right 250ms;
+
+  .flex-controls-container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: space-between;
+    justify-content: space-between;
+    align-items: stretch;
+  }
+
+  .compound-param-container {
+    position: relative;
+    width: 100%
+  }
+
+  .compound-param-child {
+    position: absolute;
+    bottom: 35px;
+    right: 35px;
+  }
+
+  input[type="file"] {
+    display: none;
+  }
+
+  .custom-file-upload {;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    display: inline-block;
+    padding: 4px 12px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 400;
+  }
+
+  .custom-file-upload:hover {
+    background: #eee;
+  }
+
+  .mat-slide-toggle-label {
+    display: block;
+    font-size: 16px;
+    transform: translate(-12px, -8px) scale(0.75);
+    color: rgba(0, 0, 0, 0.6)
+  }
 }
