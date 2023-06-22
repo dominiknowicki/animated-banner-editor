@@ -10,6 +10,13 @@ import {PlaygroundComponent} from "./gui/playground/playground.component"
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations"
 import {ShowCodeDialog} from './gui/show-code-dialog/show-code-dialog.component'
 import {NgxColorsModule} from "ngx-colors"
+import {PlainJsTabComponent} from "./gui/show-code-dialog/tabs/plain-js-tab.component";
+import {CodeParamsComponent} from "./gui/show-code-dialog/tabs/code-params.component";
+import {AngularTabComponent} from "./gui/show-code-dialog/tabs/angular-tab.component";
+import {NpmTabComponent} from "./gui/show-code-dialog/tabs/npm-tab.component";
+import {ReactTabComponent} from "./gui/show-code-dialog/tabs/react-tab.component";
+import {VueTabComponent} from "./gui/show-code-dialog/tabs/vue-tab.component";
+import {CdnTabComponent} from "./gui/show-code-dialog/tabs/cdn-tab.component";
 
 @NgModule({
   declarations: [
@@ -18,6 +25,13 @@ import {NgxColorsModule} from "ngx-colors"
     ParamsComponent,
     PlaygroundComponent,
     ShowCodeDialog,
+    AngularTabComponent,
+    ReactTabComponent,
+    VueTabComponent,
+    NpmTabComponent,
+    CdnTabComponent,
+    PlainJsTabComponent,
+    CodeParamsComponent,
   ],
   imports: [
     BrowserModule,
