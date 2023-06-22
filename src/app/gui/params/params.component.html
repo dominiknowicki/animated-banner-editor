@@ -12,34 +12,6 @@
   </mat-select>
 </mat-form-field>
 
-<mat-form-field appearance="outline">
-  <mat-label>Text</mat-label>
-  <input matInput [(ngModel)]="params.text" (ngModelChange)="onUpdate()">
-</mat-form-field>
-
-
-<div class="flex-controls-container">
-  <mat-form-field appearance="outline" style="max-width: 100px">
-    <mat-label>Width</mat-label>
-    <input matInput type="number" [(ngModel)]="params.width" (ngModelChange)="onUpdate()">
-  </mat-form-field>
-
-  <mat-form-field appearance="outline" style="max-width: 100px">
-    <mat-label>Height</mat-label>
-    <input matInput type="number" [(ngModel)]="params.height" (ngModelChange)="onUpdate()">
-  </mat-form-field>
-
-  <div class="compound-param-container" style="max-width: 100px">
-    <mat-label class="mat-slide-toggle-label">Autosize</mat-label>
-    <mat-slide-toggle
-      [(ngModel)]="params.autosize"
-      (ngModelChange)="onUpdate()">
-    </mat-slide-toggle>
-  </div>
-</div>
-
-<!--// TODO read height/width form file-->
-
 <div class="compound-param-container ">
   <mat-form-field appearance="outline">
     <mat-label>Background</mat-label>
@@ -49,7 +21,8 @@
       <mat-option value="url('assets/media/yarsCross_1000x750.jpg')">Yaris Cross</mat-option>
       <mat-option value="white">white</mat-option>
       <mat-option value="customBackgroundColor">custom color</mat-option>
-      <mat-option value="customBackgroundImage">custom background</mat-option>
+      <mat-option value="customBackgroundImage">upload background</mat-option>
+      <mat-option value="customUrlBackgroundImage">link to background</mat-option>
     </mat-select>
   </mat-form-field>
   <ngx-colors
@@ -63,6 +36,49 @@
     Choose file
   </label>
   <!--  TODO: update button label to a file name-->
+  <label *ngIf="params.background === 'customUrlBackgroundImage'"
+         class="no-margin compound-param-child custom-file-url-input">
+    <input type="text" (change)="onUrlEntered($event)" style="border: none">
+  </label>
+
+</div>
+
+
+<mat-form-field appearance="outline">
+  <mat-label>Text</mat-label>
+  <input matInput [(ngModel)]="params.text" (ngModelChange)="onUpdate()">
+</mat-form-field>
+
+<!--// TODO read height/width form file-->
+
+<div class="flex-controls-container">
+  <mat-form-field appearance="outline" style="max-width: 120px">
+    <mat-label>Width</mat-label>
+    <input matInput type="number" [(ngModel)]="params.width" (ngModelChange)="onUpdate()">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" style="max-width: 120px">
+    <mat-label>Height</mat-label>
+    <input matInput type="number" [(ngModel)]="params.height" (ngModelChange)="onUpdate()">
+  </mat-form-field>
+
+  <div class="compound-param-container" style="max-width: 140px">
+    <div
+      matTooltip="Component will match width of a parent container"
+      style="display: flex">
+      <mat-label
+        class="mat-slide-toggle-label"
+      >Match parent
+      </mat-label>
+      <mat-icon aria-hidden="false" class="tooltip-icon" style="top: -12px; left: -20px"
+                aria-label="Component will match width of a parent container"
+                fontIcon="information"></mat-icon>
+    </div>
+    <mat-slide-toggle
+      [(ngModel)]="params.autosize"
+      (ngModelChange)="onUpdate()">
+    </mat-slide-toggle>
+  </div>
 </div>
 
 <h4 matTooltip="Params of animation - can be different for each animation">
