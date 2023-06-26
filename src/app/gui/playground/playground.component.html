@@ -1,20 +1,33 @@
-<div class="playground-container">
-  <animated-banner-component
-    *ngIf="params && _reloaded"
-    animation="{{params.animation}}"
-    autosize="{{params.autosize}}"
-    background="{{params.background}}"
-    color="{{params.color}}"
-    fontsize="{{params.fontsize}}"
-    height="{{params.height}}"
-    loop="{{params.loop}}"
-    text="{{params.text}}"
-    textposition="{{params.textposition}}"
-    width="{{params.width}}"
-  ></animated-banner-component>
+<div class="playground-container" [style]="markParent">
+  <div class="playground-helper">
+    <animated-banner-component
+      *ngIf="params && _reloaded"
+      animation="{{params.animation}}"
+      autosize="{{params.autosize}}"
+      background="{{params.background}}"
+      color="{{params.color}}"
+      fontsize="{{params.fontsize}}"
+      height="{{params.height}}"
+      loop="{{params.loop}}"
+      text="{{params.text}}"
+      textposition="{{params.textposition}}"
+      width="{{params.width}}"
+    ></animated-banner-component>
+
+    <div
+      *ngIf="params?.autosize"
+      class="playground-helper__resizer"
+    >
+      <h3>Parent container width</h3>
+      <div class="playground-helper__buttons">
+        <button class="btn btn-primary" disabled>-</button>
+        <button class="btn btn-primary" disabled>+</button>
+      </div>
+    </div>
+  </div>
 </div>
 <app-params
-  [style.right]="showParams ? '0' : ' -400px'"
+  [style.right]="showParams ? '0' : ' -500px'"
   (paramEmitter)="onParamEmitted($event)"
 ></app-params>
 

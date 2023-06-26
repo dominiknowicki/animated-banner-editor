@@ -1,32 +1,47 @@
 <h1 mat-dialog-title>How to implement</h1>
-<div mat-dialog-content>
+<div mat-dialog-content style="overflow: hidden">
   <mat-tab-group>
-    <mat-tab label="Params">
+    <mat-tab label="Plain Javascript">
       <hr/>
-      <h3>Params to be provided to the Animation Banner webcomponent:</h3>
-      <mat-form-field disabled appearance="outline">
-        <textarea style="min-height: 400px" disabled matInput>
-            {{getTab1Text()}}
-        </textarea>
-      </mat-form-field>
+      <h3>Steps to implement on a website that uses plain Javascript - with animated-banner downloaded locally:</h3>
+      <div class="instructions">
+        <app-plain-js-tab [data]="data"></app-plain-js-tab>
+      </div>
     </mat-tab>
-    <mat-tab label="Javascript">
+    <mat-tab label="CDN">
       <hr/>
-      <h3>Steps to implement in plain Javascript:</h3>
-      <mat-form-field disabled appearance="outline">
-        <textarea style="min-height: 400px" disabled matInput>
-            {{getTab2Text()}}
-        </textarea>
-      </mat-form-field>
+      <h3>Steps to implement on a website that uses plain Javascript - with animated-banner imported from CDN:</h3>
+      <div class="instructions">
+        <app-cdn-tab [data]="data"></app-cdn-tab>
+      </div>
     </mat-tab>
-    <mat-tab disabled="disabled" label="Angular">
-      <h2>How to implement in Angular</h2>
+    <mat-tab label="NPM">
+      <hr/>
+      <h3>Steps to implement on a website that uses NPM:</h3>
+      <div class="instructions">
+        <app-npm-tab [data]="data"></app-npm-tab>
+      </div>
     </mat-tab>
-    <mat-tab disabled="disabled" label="React">
-      <h2>How to implement in React</h2>
+    <mat-tab label="Angular">
+      <hr/>
+      <h3>Steps to implement in Angular application:</h3>
+      <div class="instructions">
+        <app-angular-tab [data]="data"></app-angular-tab>
+      </div>
     </mat-tab>
-    <mat-tab disabled="disabled" label="Vue">
-      <h2>How to implement in Vue</h2>
+    <mat-tab label="React">
+      <hr/>
+      <h3>Steps to implement in React application:</h3>
+      <div class="instructions">
+        <app-react-tab [data]="data"></app-react-tab>
+      </div>
+    </mat-tab>
+    <mat-tab label="Vue">
+      <hr/>
+      <h3>Steps to implement in Vue application:</h3>
+      <div class="instructions">
+        <app-vue-tab [data]="data"></app-vue-tab>
+      </div>
     </mat-tab>
   </mat-tab-group>
 </div>

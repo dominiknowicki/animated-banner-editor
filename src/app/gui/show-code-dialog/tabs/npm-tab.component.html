@@ -1,0 +1,25 @@
+<p>1. Install animated-banner NPM package by running:</p>
+<div style="display: flex">
+  <button (click)="copy(link1)" mat-icon-button>
+    <mat-icon class="small">file_copy</mat-icon>
+  </button>
+  <p class="code" [innerText]="link1"></p>
+</div>
+<p>2. Import webcomponent in head of your index.html file with by adding:</p>
+<div style="display: flex">
+  <button (click)="copy(link2)" mat-icon-button>
+    <mat-icon class="small">file_copy</mat-icon>
+  </button>
+  <p class="code" [innerText]="link2"></p>
+</div>
+<p>3. Copy the javascript files of desired animation into the source folder of your website
+  and import them in head of your index.html file where src should point the path to the animation file
+  or import desired animations in head of your index.html file by adding:</p>
+<div style="display: flex">
+  <button (click)="copy(link3)" mat-icon-button>
+    <mat-icon class="small">file_copy</mat-icon>
+  </button>
+  <p class="code" [innerText]="link3"></p>
+</div>
+<p>4. Use the webcomponent in your HTML by adding:</p>
+<app-code-params [data]="data"></app-code-params>

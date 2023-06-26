@@ -1,0 +1,24 @@
+<p>1. Import animated-banner webcomponent from CDN in head of your index.html file by adding:</p>
+<div style="display: flex">
+  <button (click)="copy(link1)" mat-icon-button>
+    <mat-icon class="small">file_copy</mat-icon>
+  </button>
+  <p class="code" [innerText]="link1"></p>
+</div>
+<p>or follow this instruction:</p>
+<div style="display: flex">
+  <button (click)="openUrl(stencilUrl)" mat-icon-button>
+    <mat-icon class="small">link</mat-icon>
+  </button>
+  <p class="code" [innerText]="stencilUrl"></p>
+</div>
+
+<p>2. Import desired animations in head of your index.html file by adding:</p>
+<div style="display: flex">
+  <button (click)="copy(link2)" mat-icon-button>
+    <mat-icon class="small">file_copy</mat-icon>
+  </button>
+  <p class="code" [innerText]="link2"></p>
+</div>
+<p>3. Use the webcomponent in your HTML by adding:</p>
+<app-code-params [data]="data"></app-code-params>

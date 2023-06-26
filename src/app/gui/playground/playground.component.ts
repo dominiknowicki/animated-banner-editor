@@ -11,6 +11,10 @@ export class PlaygroundComponent {
   _reloaded = true
   params = null
 
+  public get markParent() {
+    return this.params?.autosize ? "background: #eee" : ""
+  }
+
   onParamEmitted(param: object): void {
     this.params = param
     this.reload()

@@ -16,4 +16,22 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   font-size: 18px;
   color: #666;
   cursor: pointer;
+  position: relative;
+  top: 5px;
+}
+
+.code {
+  font-family: monospace;
+  font-size: 14px;
+  background-color: #eee;
+  padding: 5px;
+  border-radius: 4px;
+  margin: 5px 0;
+  width: 100%;
+  word-break: break-all;
+
+  //&:hover {
+  //  background-color: #ddd;
+  //  cursor: pointer;
+  //}
 }
