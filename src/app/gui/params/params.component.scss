@@ -6,7 +6,7 @@
   position: fixed;
   right: 0;
   top: 64px;
-  width: 400px;
+  width: 500px;
   height: 100%;
   border-left: 1px solid #ddd;
   z-index: 0;
@@ -38,7 +38,18 @@
     display: none;
   }
 
-  .custom-file-upload {;
+  .custom-file-url-input {
+    border: 1px solid #ccc;
+    width: 377px;
+    font-size: 14px;
+    font-weight: 400;
+    bottom: 38px;
+    input {
+      width: 375px;
+    }
+  }
+
+  .custom-file-upload {
     border: 1px solid #ccc;
     border-radius: 5px;
     display: inline-block;

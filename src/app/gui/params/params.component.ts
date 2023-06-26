@@ -36,12 +36,18 @@ export class ParamsComponent implements OnInit {
         updatedParams.background = this.customBackgroundColor
         break
       case 'customBackgroundImage':
+      case 'customUrlBackgroundImage':
         updatedParams.background = `url('${this.customBackgroundImage}')`
         break
       default:
         updatedParams.background = this.params.background
     }
     return updatedParams
+  }
+
+  onUrlEntered(event: any) {
+    this.customBackgroundImage = event.target.value
+    this.onUpdate()
   }
 
   onFileUpload(event: any) {
@@ -61,12 +67,8 @@ export class ParamsComponent implements OnInit {
 
   openShowCodeDialog(): void {
     const paramsToDisplay = this.applyCustomParams(this.params)
-    if (paramsToDisplay.background.includes('url')) {
-      paramsToDisplay.background = 'url(path/to/your/image)'
-    }
-
     this.dialog.open(ShowCodeDialog, {
-      width: '50vw',
+      width: '80vw',
       enterAnimationDuration: 0,
       exitAnimationDuration: 0,
       data: paramsToDisplay

@@ -16,7 +16,7 @@ export interface Params {
 
 export const DEFAULT_PARAMS: Params = {
   animation: "slide-right",
-  autosize: true,
+  autosize: false,
   background: "url('assets/media/corollaSedan_1000x750.jpg')",
   color: "#666",
   fontsize: 18,

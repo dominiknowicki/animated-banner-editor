@@ -1,0 +1,18 @@
+<p>1. Copy sources of animated-banner webcomponent into the source folder of your website
+and import it in head of your index.html file by adding:
+</p>
+<div style="display: flex">
+  <button (click)="copy(link1)" mat-icon-button>
+    <mat-icon class="small">download_file</mat-icon>
+  </button>
+  <p class="code" [innerText]="link1"></p>
+</div>
+<p>2. Import desired animations in head of your index.html file by adding:</p>
+<div style="display: flex">
+  <button (click)="copy(link2)" mat-icon-button>
+    <mat-icon class="small">file_copy</mat-icon>
+  </button>
+  <p class="code" [innerText]="link2"></p>
+</div>
+<p>3. Use the webcomponent in your HTML by adding:</p>
+<app-code-params [data]="data"></app-code-params>
