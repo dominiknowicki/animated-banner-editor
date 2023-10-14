@@ -1,6 +1,7 @@
 import {Component, Input} from '@angular/core'
-import {Params} from "../../../model/params";
+import {ComponentParams} from "../../../model/component-params";
 import {copyToClipboard} from "../../../shared/utils";
+import packageInfo  from '../../../../../package.json'
 
 @Component({
   selector: 'app-plain-js-tab',
@@ -8,10 +9,11 @@ import {copyToClipboard} from "../../../shared/utils";
 })
 export class PlainJsTabComponent {
 
-  @Input() data: Params
+  @Input() elementId: string
+  @Input() data: ComponentParams
   public link1: string = "<script src='/animated-banner-component/dist/animated-banner-component.esm.js'></script>"
   public get link2(): string {
-    return `<script type='module' src='https://unpkg.com/browse/animated-banner@0.0.10/dist/animations/${this.data.animation}.js'></script>`
+    return `<script type='module' src='https://unpkg.com/browse/animated-banner@${packageInfo.version}/dist/animations/${this.data.animation}.js'></script>`
   }
 
   public copy(text): void {

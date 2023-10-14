@@ -12,7 +12,7 @@ export class PlaygroundComponent {
   params = null
 
   public get markParent() {
-    return this.params?.autosize ? "background: #eee" : ""
+    return this.params?.matchParent ? "background: #eee" : ""
   }
 
   onParamEmitted(param: object): void {
@@ -21,7 +21,7 @@ export class PlaygroundComponent {
   }
 
   /**
-   * Reloads the component into playground, required for autosize to work properly
+   * Reloads the component into playground, required for matchParent to work properly
    * @private
    */
   private reload(): void {

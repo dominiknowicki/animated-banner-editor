@@ -2,7 +2,7 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core'
 import {MatDialog} from '@angular/material/dialog'
 import {ShowCodeDialog} from "../show-code-dialog/show-code-dialog.component"
 import {Params} from "@angular/router"
-import {DEFAULT_PARAMS} from "../../model/params"
+import {DEFAULT_PARAMS} from "../../model/component-params"
 
 @Component({
   selector: 'app-params',
@@ -12,16 +12,41 @@ import {DEFAULT_PARAMS} from "../../model/params"
 export class ParamsComponent implements OnInit {
   @Output() paramEmitter = new EventEmitter<object>()
   public params: Params = DEFAULT_PARAMS
+  public animationParams: any
   public customColor = "red"
   public customBackgroundColor = "red"
   public customBackgroundImage: string
-  public fontsize: 20
 
-  constructor(public dialog: MatDialog) {
+  constructor(
+    public dialog: MatDialog
+  ) {}
+
+  get animationParamsKeys(): string[] {
+    return Object.keys(this.animationParams)
   }
 
   ngOnInit(): void {
+    this.setAnimationParamsListener()
+    this.getAnimationParams()
     this.restartAnimation()
+  }
+
+  private setAnimationParamsListener(): void {
+    // Listen to answer event from animation
+    window.addEventListener('selected-animation-params', (event: any)=> {
+      this.animationParams = event.detail
+      for (const key in this.animationParams) {
+        if (!this.params.hasOwnProperty(key)) {
+          this.params[key] = this.animationParams[key].default
+        }
+      }
+      console.log('Custom params provided by animation: ', this.animationParams);
+    });
+  }
+
+  getAnimationParams(): void {
+    // Ask animation for params
+    window.dispatchEvent(new CustomEvent(`get-${this.params.animation}-params`))
   }
 
   onUpdate(): void {

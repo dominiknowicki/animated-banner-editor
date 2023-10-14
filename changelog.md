@@ -1,3 +1,7 @@
+### Version 0.1.1
+- Dialog with instructions updated
+### Version 0.1.0
+- Custom animation params feature added
 ### Version 0.0.4
 - Dialog with instructions added
 ### Version 0.0.3
