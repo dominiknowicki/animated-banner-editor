@@ -3,14 +3,18 @@
   <mat-icon aria-hidden="false" class="tooltip-icon" aria-label="Params of component - common for all animations"
             fontIcon="information"></mat-icon>
 </h4>
-<mat-form-field appearance="outline">
-  <mat-label>Animation</mat-label>
-  <mat-select [(ngModel)]="params.animation" (ngModelChange)="onUpdate()">
-    <mat-option value="slide-right">slide-right</mat-option>
-    <mat-option value="slide-in-from-left">slide-in-from-left</mat-option>
-    <mat-option value="fade-in-out">fade-in-out</mat-option>
-  </mat-select>
-</mat-form-field>
+
+<div class="compound-param-container ">
+  <mat-form-field appearance="outline">
+    <mat-label>Animation</mat-label>
+    <mat-select [(ngModel)]="params.animation" (ngModelChange)="onUpdate(); getAnimationParams();">
+      <mat-option *ngFor="let animation of animationList" [value]="animation">{{animation}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <label class="no-margin compound-param-child compound-param-button">
+    <button mat-stroked-button color="white" (click)="openAddAnimationDialog()">Add animation</button>
+  </label>
+</div>
 
 <div class="compound-param-container ">
   <mat-form-field appearance="outline">
@@ -43,12 +47,6 @@
 
 </div>
 
-
-<mat-form-field appearance="outline">
-  <mat-label>Text</mat-label>
-  <input matInput [(ngModel)]="params.text" (ngModelChange)="onUpdate()">
-</mat-form-field>
-
 <!--// TODO read height/width form file-->
 
 <div class="flex-controls-container">
@@ -70,66 +68,85 @@
         class="mat-slide-toggle-label"
       >Match parent
       </mat-label>
-      <mat-icon aria-hidden="false" class="tooltip-icon" style="top: -12px; left: -20px"
+      <mat-icon aria-hidden="false" class="tooltip-icon" style="top: -6px; left: -20px"
                 aria-label="Component will match width of a parent container"
                 fontIcon="information"></mat-icon>
     </div>
     <mat-slide-toggle
-      [(ngModel)]="params.autosize"
+      [(ngModel)]="params.matchParent"
       (ngModelChange)="onUpdate()">
     </mat-slide-toggle>
   </div>
 </div>
+
+<mat-form-field appearance="outline">
+  <mat-label>Text</mat-label>
+  <input matInput [(ngModel)]="params.text" (ngModelChange)="onUpdate()">
+</mat-form-field>
 
 <h4 matTooltip="Params of animation - can be different for each animation">
   Animation params
   <mat-icon aria-hidden="false" class="tooltip-icon"
             aria-label="Params of animation - can be different for each animation" fontIcon="information"></mat-icon>
 </h4>
-<!--TODO read available params from an animation file with eg. gerParam() function that is implemented by AnimatorInterface-->
-<div class="compound-param-container ">
-  <mat-form-field appearance="outline">
-    <mat-label>Text color</mat-label>
-    <mat-select [(ngModel)]="params.color" (ngModelChange)="onUpdate()">
-      <mat-option value="black">black</mat-option>
-      <mat-option value="white">white</mat-option>
-      <mat-option value="#666">gray</mat-option>
-      <mat-option value="customColor">custom color
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <ngx-colors
-    *ngIf="params.color === 'customColor'"
-    class="compound-param-child" ngx-colors-trigger
-    [(ngModel)]="customColor" (ngModelChange)="onUpdate()">
-  </ngx-colors>
-</div>
 
-<mat-form-field appearance="outline">
-  <mat-label>Text position</mat-label>
-  <mat-select [(ngModel)]="params.textposition" (ngModelChange)="onUpdate()">
-    <mat-option value="top">top</mat-option>
-    <mat-option value="middle">middle</mat-option>
-    <mat-option value="bottom">bottom</mat-option>
-  </mat-select>
-</mat-form-field>
+<ng-container *ngIf="animationParams">
+  <ng-container *ngFor="let key of animationParamsKeys">
 
-<mat-form-field appearance="outline">
-  <mat-label>Font size</mat-label>
-  <input matInput type="number" [(ngModel)]="params.fontsize" (ngModelChange)="onUpdate()">
-</mat-form-field>
+    <mat-form-field *ngIf="animationParams[key].type==='input'" appearance="outline">
+      <mat-label>{{animationParams[key].label}}</mat-label>
+      <input matInput [(ngModel)]="params[key]" (ngModelChange)="onUpdate()">
+    </mat-form-field>
 
-<!--TODO: rethink the loop param, maybe it should be a part of animation specific not a param, or a param of specific animations only-->
-<!--<div class="compound-param-container ">-->
-<!--  <mat-slide-toggle-->
-<!--    [(ngModel)]="params.loop"-->
-<!--    (ngModelChange)="onUpdate()">-->
-<!--    Loop animation-->
-<!--  </mat-slide-toggle>-->
-<!--  <button style="position: relative; right:0" mat-flat-button (click)="restartAnimation()">Restart</button>-->
-<!--</div>-->
+    <mat-form-field *ngIf="animationParams[key].type==='number'" appearance="outline">
+      <mat-label>{{animationParams[key].label}}</mat-label>
+      <input matInput type="number" [(ngModel)]="params[key]" (ngModelChange)="onUpdate()"
+             [min]="animationParams[key]['min']" [max]="animationParams[key].max">
+    </mat-form-field>
+
+    <mat-form-field *ngIf="animationParams[key].type==='select'" appearance="outline">
+      <mat-label>{{animationParams[key].label}}</mat-label>
+      <mat-select [(ngModel)]="params[key]" (ngModelChange)="onUpdate()">
+        <mat-option *ngFor="let option of animationParams[key].options"
+                    [value]="option"
+        >{{option}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div
+      *ngIf="animationParams[key].type==='color'"
+      class="compound-param-container">
+      <mat-form-field appearance="outline">
+        <mat-label>{{animationParams[key].label}}</mat-label>
+        <mat-select [(ngModel)]="params[key]" (ngModelChange)="onUpdate()">
+          <mat-option value="black">black</mat-option>
+          <mat-option value="white">white</mat-option>
+          <mat-option value="#666">gray</mat-option>
+          <mat-option value="customColor">custom color
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <ngx-colors
+        *ngIf="params.color === 'customColor'"
+        class="compound-param-child" ngx-colors-trigger
+        [(ngModel)]="customColor" (ngModelChange)="onUpdate()">
+      </ngx-colors>
+    </div>
+
+    <div
+      *ngIf="animationParams[key].type==='boolean'"
+      class="compound-param-container slide-toggle__spacing">
+      <mat-slide-toggle
+        [(ngModel)]="params[key]"
+        (ngModelChange)="onUpdate()">
+        <span class="slide-label-span">{{animationParams[key].label}}</span>
+      </mat-slide-toggle>
+    </div>
+
+  </ng-container>
+</ng-container>
 
 <div class="flex-controls-container">
   <button mat-flat-button color="accent" (click)="openShowCodeDialog()">Show code</button>
-  <button style="position: relative; right:0" mat-flat-button (click)="restartAnimation()">Restart</button>
+  <button style="position: relative; right:0" mat-stroked-button (click)="restartAnimation()">Restart animation</button>
 </div>

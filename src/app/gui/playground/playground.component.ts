@@ -10,9 +10,26 @@ export class PlaygroundComponent {
 
   _reloaded = true
   params = null
+  width = 300
 
   public get markParent() {
-    return this.params?.autosize ? "background: #eee" : ""
+    return this.params?.matchParent ? "background: #eee" : ""
+  }
+
+  public get adjustWidth() {
+    return this.params?.matchParent ? `width: ${this.width}px` : ""
+  }
+
+  public makeSmaller(): void {
+    if (this.width <= 200) return
+    this.width -= 20
+    this.reload()
+  }
+
+  public makeBigger(): void {
+    if (this.width >= 1000) return
+    this.width += 20
+    this.reload()
   }
 
   onParamEmitted(param: object): void {
@@ -21,7 +38,7 @@ export class PlaygroundComponent {
   }
 
   /**
-   * Reloads the component into playground, required for autosize to work properly
+   * Reloads the component into playground, required for matchParent to work properly
    * @private
    */
   private reload(): void {
