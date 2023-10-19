@@ -1,5 +1,5 @@
 ### Version 0.1.1
-- Possibility of adding custom Animation
+- Custom Animation can be added
 - Adjustable width of Animated Banner's parent
 ### Version 0.1.0
 - Custom animation params feature added

@@ -1,6 +1,3 @@
-/**
- * Animation Slide Right 0.1.1
- */
 class ABSlideRight {
   constructor(canvas, text, params) {
     var _a, _b, _c, _d, _e;
@@ -30,19 +27,19 @@ class ABSlideRight {
     this.textY = this.getTextY();
   }
   static registerAnimator() {
-    window.addEventListener('slide-right', (event) => {
+    window.addEventListener(this.animationName, (event) => {
       const canvas = event.detail.canvas;
       const text = event.detail.text;
       const params = event.detail.params;
       const animator = new ABSlideRight(canvas, text, params);
       animator.animate();
-      console.log('Animation started: slide-right');
+      console.log(`Animation started: ${this.animationName}`);
     });
-    console.log('Animation registered: slide-right');
+    console.log(`Animation registered: ${this.animationName}`);
   }
   static registerParamsProvider() {
-    window.addEventListener('get-slide-right-params', () => {
-      console.log('Got request for: get-slide-right-params');
+    window.addEventListener(`get-${this.animationName}-params`, () => {
+      console.log(`Got request for: get-${this.animationName}-params`);
       // return animation params when editor requests them
       // 'selected-animation-params' is constant event name for all animations which editor listens
       window.dispatchEvent(new CustomEvent('selected-animation-params', {
@@ -75,7 +72,7 @@ class ABSlideRight {
         }
       }));
     });
-    console.log('ParamsProvider registered: slide-right');
+    console.log(`ParamsProvider registered: ${this.animationName}`);
   }
   //implements AnimatorInterface
   animate() {
@@ -118,6 +115,7 @@ class ABSlideRight {
     }
   }
 }
+ABSlideRight.animationName = 'slide-right';
 ABSlideRight.registerAnimator();
 ABSlideRight.registerParamsProvider();
 export {};

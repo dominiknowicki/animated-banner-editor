@@ -3,15 +3,18 @@
   <mat-icon aria-hidden="false" class="tooltip-icon" aria-label="Params of component - common for all animations"
             fontIcon="information"></mat-icon>
 </h4>
-<mat-form-field appearance="outline">
-  <mat-label>Animation</mat-label>
-  <mat-select [(ngModel)]="params.animation" (ngModelChange)="onUpdate(); getAnimationParams();">
-    <mat-option value="no-animation">no-animation</mat-option>
-    <mat-option value="slide-right">slide-right</mat-option>
-    <mat-option value="slide-in-from-left">slide-in-from-left</mat-option>
-    <mat-option value="fade-in-out">fade-in-out</mat-option>
-  </mat-select>
-</mat-form-field>
+
+<div class="compound-param-container ">
+  <mat-form-field appearance="outline">
+    <mat-label>Animation</mat-label>
+    <mat-select [(ngModel)]="params.animation" (ngModelChange)="onUpdate(); getAnimationParams();">
+      <mat-option *ngFor="let animation of animationList" [value]="animation">{{animation}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <label class="no-margin compound-param-child compound-param-button">
+    <button mat-stroked-button color="white" (click)="openAddAnimationDialog()">Add animation</button>
+  </label>
+</div>
 
 <div class="compound-param-container ">
   <mat-form-field appearance="outline">
@@ -145,5 +148,5 @@
 
 <div class="flex-controls-container">
   <button mat-flat-button color="accent" (click)="openShowCodeDialog()">Show code</button>
-  <button style="position: relative; right:0" mat-flat-button (click)="restartAnimation()">Restart</button>
+  <button style="position: relative; right:0" mat-stroked-button (click)="restartAnimation()">Restart animation</button>
 </div>

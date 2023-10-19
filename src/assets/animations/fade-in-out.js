@@ -30,19 +30,19 @@ class ABFadeInOut {
     this.textY = this.getTextY();
   }
   static registerAnimator() {
-    window.addEventListener('fade-in-out', (event) => {
+    window.addEventListener(this.animationName, (event) => {
       const canvas = event.detail.canvas;
       const text = event.detail.text;
       const params = event.detail.params;
       const animator = new ABFadeInOut(canvas, text, params);
       animator.animate();
-      console.log('Animation started: fade-in-out');
+      console.log(`Animation started: ${this.animationName}`);
     });
-    console.log('Animation registered: fade-in-out');
+    console.log(`Animation registered: ${this.animationName}`);
   }
   static registerParamsProvider() {
-    window.addEventListener('get-fade-in-out-params', () => {
-      console.log('Got request for: get-fade-in-out-params');
+    window.addEventListener(`get-${this.animationName}-params`, () => {
+      console.log(`Got request for: get-${this.animationName}-params`);
       // return animation params when editor requests them
       // 'selected-animation-params' is constant event name for all animations which editor listens
       window.dispatchEvent(new CustomEvent('selected-animation-params', {
@@ -68,7 +68,7 @@ class ABFadeInOut {
         }
       }));
     });
-    console.log('ParamsProvider registered: fade-in-out');
+    console.log(`ParamsProvider registered: ${this.animationName}`);
   }
   //implements AnimatorInterface
   animate() {
@@ -117,6 +117,7 @@ class ABFadeInOut {
     }
   }
 }
+ABFadeInOut.animationName = 'fade-in-out';
 ABFadeInOut.registerAnimator();
 ABFadeInOut.registerParamsProvider();
 export {};

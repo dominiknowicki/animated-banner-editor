@@ -1,6 +1,3 @@
-/**
- * Animation Slide In From Left 0.1.1
- */
 class ABSlideInFromLeft {
   constructor(canvas, text, params) {
     var _a, _b, _c, _d, _e;
@@ -32,19 +29,19 @@ class ABSlideInFromLeft {
     this.textY = this.getTextY();
   }
   static registerAnimator() {
-    window.addEventListener('slide-in-from-left', (event) => {
+    window.addEventListener(this.animationName, (event) => {
       const canvas = event.detail.canvas;
       const text = event.detail.text;
       const params = event.detail.params;
       const animator = new ABSlideInFromLeft(canvas, text, params);
       animator.animate();
-      console.log('Animation started: slide-in-from-left');
+      console.log(`Animation started: ${this.animationName}`);
     });
-    console.log('Animation registered: slide-in-from-left');
+    console.log(`Animation registered: ${this.animationName}`);
   }
   static registerParamsProvider() {
-    window.addEventListener('get-slide-in-from-left-params', () => {
-      console.log('Got request for: get-slide-in-from-left-params');
+    window.addEventListener(`get-${this.animationName}-params`, () => {
+      console.log(`Got request for: get-${this.animationName}-params`);
       // return animation params when editor requests them
       // 'selected-animation-params' is constant event name for all animations which editor listens
       window.dispatchEvent(new CustomEvent('selected-animation-params', {
@@ -82,7 +79,7 @@ class ABSlideInFromLeft {
         }
       }));
     });
-    console.log('ParamsProvider registered: slide-in-from-left');
+    console.log(`ParamsProvider registered: ${this.animationName}`);
   }
   //implements AnimatorInterface
   animate() {
@@ -129,6 +126,7 @@ class ABSlideInFromLeft {
     }
   }
 }
+ABSlideInFromLeft.animationName = 'slide-in-from-left';
 ABSlideInFromLeft.registerAnimator();
 ABSlideInFromLeft.registerParamsProvider();
 export {};
