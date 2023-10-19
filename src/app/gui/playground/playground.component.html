@@ -1,7 +1,17 @@
 <div class="playground-container" [style]="markParent">
-  <div class="playground-helper">
+  <div class="playground-helper" [style]="adjustWidth">
+    <div
+      *ngIf="params?.matchParent"
+      class="playground-helper__resizer"
+    >
+      <div class="playground-helper__buttons">
+        <button class="btn btn-primary" (click)="makeSmaller()">-</button>
+        <button class="btn btn-primary" (click)="makeBigger()">+</button>
+      </div>
+    </div>
     <animated-banner-component
       *ngIf="params && _reloaded"
+      [style]="adjustWidth"
       [animation]="params.animation"
       [background]="params.background"
       [matchParent]="params.matchParent"
@@ -11,16 +21,6 @@
       [text]="params.text"
       [animationParams]="params"
     ></animated-banner-component>
-    <div
-      *ngIf="params?.matchParent"
-      class="playground-helper__resizer"
-    >
-      <h3>Parent container width</h3>
-      <div class="playground-helper__buttons">
-        <button class="btn btn-primary" disabled>-</button>
-        <button class="btn btn-primary" disabled>+</button>
-      </div>
-    </div>
   </div>
 </div>
 <app-params
