@@ -1,6 +1,6 @@
 <div style="display: flex">
-  <button (click)="copy(text)" mat-icon-button>
+  <button (click)="copy(getText())" mat-icon-button>
     <mat-icon class="small">file_copy</mat-icon>
   </button>
-  <p class="code" [innerText]="text"></p>
+  <p class="code" [innerText]="getText()"></p>
 </div>
