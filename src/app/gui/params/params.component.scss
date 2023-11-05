@@ -50,13 +50,15 @@
 
   .custom-file-url-input {
     border: 1px solid #ccc;
-    width: 377px;
+    border-radius: 5px;
+    width: 370px;
     font-size: 14px;
     font-weight: 400;
-    bottom: 38px;
+    bottom: 34px;
 
     input {
-      width: 375px;
+      width: 365px;
+      height: 30px;
     }
   }
 
