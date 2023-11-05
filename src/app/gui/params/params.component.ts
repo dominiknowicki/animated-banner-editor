@@ -3,7 +3,7 @@ import {MatDialog} from '@angular/material/dialog'
 import {ShowCodeDialog} from "../show-code-dialog/show-code-dialog.component"
 import {Params} from "@angular/router"
 import {DEFAULT_PARAMS} from "../../model/component-params"
-import {AddAnimationDialog} from "../add-animation-dialog/add-animation-dialog.component";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-params',
@@ -21,7 +21,8 @@ export class ParamsComponent implements OnInit {
 
 
   constructor(
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public snackBar: MatSnackBar
   ) {
   }
 
@@ -53,6 +54,13 @@ export class ParamsComponent implements OnInit {
     window.dispatchEvent(new CustomEvent(`get-${this.params.animation}-params`))
   }
 
+  onAnimationFileUpload(event: any): void {
+    const file = event.target.files[0]
+    const reader = new FileReader()
+    reader.onload = () => this.onAnimationFileLoaded(reader.result as string)
+    reader.readAsText(file)
+  }
+
   onUpdate(): void {
     this.paramEmitter.emit(this.applyCustomParams(this.params))
   }
@@ -76,14 +84,14 @@ export class ParamsComponent implements OnInit {
 
   onUrlEntered(event: any) {
     this.customBackgroundImage = event.target.value
-      const image = new Image()
-      image.onload = () => {
-        // setting width and height of canvas to match image
-        this.params.width = image.width
-        this.params.height = image.height
-        this.onUpdate()
-      }
-      image.src = this.customBackgroundImage
+    const image = new Image()
+    image.onload = () => {
+      // setting width and height of canvas to match image
+      this.params.width = image.width
+      this.params.height = image.height
+      this.onUpdate()
+    }
+    image.src = this.customBackgroundImage
   }
 
   onFileUpload(event: any) {
@@ -117,24 +125,20 @@ export class ParamsComponent implements OnInit {
     })
   }
 
-  openAddAnimationDialog(): void {
-    const dialogRef = this.dialog.open(AddAnimationDialog, {
-      width: '80vw',
-      enterAnimationDuration: 0,
-      exitAnimationDuration: 0,
-      data: {}
-    })
-    dialogRef.afterClosed()
-      .subscribe((data: any): void => {
-        if (data) this.onCustomAnimationAdded(data)
-          .then((animationCode: string) => this.getAnimationName(animationCode))
-          .then((animationName: string) => this.addCustomAnimationToDropdown(animationName))
-          .then((animationName: string) => this.selectCustomAnimation(animationName))
-      })
-    // TODO: show error in toast if animation is not valid?
+  onAnimationFileLoaded(data: string): void {
+    if (data) this.onCustomAnimationAdded(data)
+      .then((animationCode: string) => this.getAnimationName(animationCode))
+      .then((animationName: string) => this.selectCustomAnimation(animationName))
+      .then((animationName: string) => this.snackBar.open(`Animation ${animationName} added`, 'OK', {
+        duration: 5000,
+        panelClass: ['success-snackbar']
+      }))
+      .catch((_: any) => this.snackBar.open(`Error adding animation - try again with different file!`, 'OK', {
+        duration: 10000,
+        panelClass: ['error-snackbar']
+      }))
   }
 
-  // TODO: maybe add animations from file with a file upload?
   onCustomAnimationAdded(data: string): Promise<string> {
     const animationCode = data.replace("export {}", "")
     if (!animationCode.includes("registerAnimator") || !animationCode.includes("animationName")) {
@@ -155,16 +159,13 @@ export class ParamsComponent implements OnInit {
     }
   }
 
-  addCustomAnimationToDropdown(animationName: string): Promise<string> {
+  selectCustomAnimation(animationName: string): Promise<string> {
+    if (!animationName) return Promise.reject(null)
     this.animationList.unshift(animationName)
-    return Promise.resolve(animationName)
-  }
-
-  selectCustomAnimation(animationName: string): void {
-    if (!animationName) return
     this.params.animation = animationName
     this.onUpdate()
     this.getAnimationParams()
     this.restartAnimation()
+    return Promise.resolve(animationName)
   }
 }

@@ -11,8 +11,9 @@
       <mat-option *ngFor="let animation of animationList" [value]="animation">{{animation}}</mat-option>
     </mat-select>
   </mat-form-field>
-  <label class="no-margin compound-param-child compound-param-button">
-    <button mat-stroked-button color="white" (click)="openAddAnimationDialog()">Add animation</button>
+  <label class="no-margin compound-param-child custom-file-upload">
+    <input type="file" accept="application/javascript, text/javascript" (change)="onAnimationFileUpload($event)">
+    Add animation
   </label>
 </div>
 

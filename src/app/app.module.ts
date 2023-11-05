@@ -17,7 +17,6 @@ import {NpmTabComponent} from "./gui/show-code-dialog/tabs/npm-tab.component";
 import {ReactTabComponent} from "./gui/show-code-dialog/tabs/react-tab.component";
 import {VueTabComponent} from "./gui/show-code-dialog/tabs/vue-tab.component";
 import {CdnTabComponent} from "./gui/show-code-dialog/tabs/cdn-tab.component";
-import {AddAnimationDialog} from "./gui/add-animation-dialog/add-animation-dialog.component";
 
 @NgModule({
   declarations: [
@@ -25,7 +24,6 @@ import {AddAnimationDialog} from "./gui/add-animation-dialog/add-animation-dialo
     TitlebarComponent,
     ParamsComponent,
     PlaygroundComponent,
-    AddAnimationDialog,
     ShowCodeDialog,
     AngularTabComponent,
     ReactTabComponent,

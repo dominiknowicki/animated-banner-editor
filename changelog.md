@@ -1,4 +1,5 @@
 ### Version 0.1.2
+- Adding Custom Animation with file input + error handling
 - Setting the size of the component to match the size of selected background
 - Update style of inputs with nested buttons and inputs
 ### Version 0.1.1

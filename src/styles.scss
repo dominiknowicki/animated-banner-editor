@@ -29,11 +29,6 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   margin: 5px 0;
   width: 100%;
   word-break: break-all;
-
-  //&:hover {
-  //  background-color: #ddd;
-  //  cursor: pointer;
-  //}
 }
 
 .prevent-select {
@@ -42,3 +37,20 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   user-select: none; /* Standard syntax */
   cursor: default;
 }
+
+.mat-mdc-snack-bar-container {
+  &.success-snackbar {
+    --mdc-snackbar-container-color: #4caf50;
+    --mat-mdc-snack-bar-button-color: #fff;
+    --mdc-snackbar-supporting-text-color: #fff;
+  }
+}
+
+.mat-mdc-snack-bar-container {
+  &.error-snackbar {
+    --mdc-snackbar-container-color: #f44336;
+    --mat-mdc-snack-bar-button-color: #fff;
+    --mdc-snackbar-supporting-text-color: #fff;
+  }
+}
+
