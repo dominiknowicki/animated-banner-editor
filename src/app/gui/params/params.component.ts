@@ -4,6 +4,7 @@ import {DEFAULT_PARAMS} from "../../model/component-params"
 import {ToastService} from "../../shared/services/toast/toast.service";
 import {CodeDialogService} from "../show-code-dialog/code-dialog.service";
 import {getAnimationName, registerCustomAnimation} from "./params.utils";
+import {MatSnackBarRef} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-params',
@@ -76,41 +77,35 @@ export class ParamsComponent implements OnInit {
   }
 
   onUrlEntered(event: any): void {
-    this.customBackgroundImage = event.target.value
-    const image = new Image()
-    image.onload = () => {
-      if (image.width > 1500 || image.height > 1500) {
-        return this.toast.error('File too large - please use smaller one')
-      }
-      // setting width and height of canvas to match image
-      this.params.width = image.width
-      this.params.height = image.height
-      this.onUpdate()
-    }
-    image.src = this.customBackgroundImage
+    const image: HTMLImageElement = new Image()
+    image.onload = this.onBackgroundImageLoaded.bind(this)
+    image.src = event.target.value
   }
 
-  onFileUpload(event: any) {
+  onFileUpload(event: any): MatSnackBarRef<any> | void {
     const file = event.target.files[0]
-    if (file.size > 524288) {
-      return this.toast.error(`File too large - please use files up to 0,5MB`)
+    if (file.size > 524288/2) {
+      return this.toast.error(`File too large - please use files up to 0,25MB`)
     }
     const reader = new FileReader()
-    reader.onload = () => {
-      this.customBackgroundImage = reader.result as string
-      const image = new Image()
-      image.onload = () => {
-        if (image.width > 1500 || image.height > 1500) {
-          return this.toast.error('File too large - please use smaller one')
-        }
-        // setting width and height of canvas to match image
-        this.params.width = image.width
-        this.params.height = image.height
-        this.onUpdate()
-      }
-      image.src = this.customBackgroundImage
+    reader.onload = (): void => {
+      const image: HTMLImageElement = new Image()
+      image.onload = this.onBackgroundImageLoaded.bind(this)
+      image.src = reader.result as string
     }
     reader.readAsDataURL(file)
+  }
+
+  onBackgroundImageLoaded(event: any): MatSnackBarRef<any> | void {
+    const image: HTMLImageElement = event.target as HTMLImageElement
+    if (image.width > 1500 || image.height > 1500) {
+      return this.toast.error('File too large - please use smaller one')
+    }
+    // setting width and height of canvas to match image
+    this.params.width = image.width
+    this.params.height = image.height
+    this.customBackgroundImage = image.src
+    this.onUpdate()
   }
 
   restartAnimation(): void {
