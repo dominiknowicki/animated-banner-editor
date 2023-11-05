@@ -3,6 +3,7 @@ import {Params} from "@angular/router"
 import {DEFAULT_PARAMS} from "../../model/component-params"
 import {ToastService} from "../../shared/services/toast/toast.service";
 import {CodeDialogService} from "../show-code-dialog/code-dialog.service";
+import {getAnimationName, registerCustomAnimation} from "./params.utils";
 
 @Component({
   selector: 'app-params',
@@ -51,13 +52,6 @@ export class ParamsComponent implements OnInit {
   getAnimationParams(): void {
     // Ask animation for params
     window.dispatchEvent(new CustomEvent(`get-${this.params.animation}-params`))
-  }
-
-  onAnimationFileUpload(event: any): void {
-    const file = event.target.files[0]
-    const reader = new FileReader()
-    reader.onload = () => this.onAnimationFileLoaded(reader.result as string)
-    reader.readAsText(file)
   }
 
   onUpdate(): void {
@@ -128,32 +122,19 @@ export class ParamsComponent implements OnInit {
     this.codeDialog.open(paramsToDisplay)
   }
 
+  onAnimationFileUpload(event: any): void {
+    const file = event.target.files[0]
+    const reader = new FileReader()
+    reader.onload = () => this.onAnimationFileLoaded(reader.result as string)
+    reader.readAsText(file)
+  }
+
   onAnimationFileLoaded(data: string): void {
-    if (data) this.onCustomAnimationAdded(data)
-      .then((animationCode: string) => this.getAnimationName(animationCode))
+    if (data) registerCustomAnimation(data)
+      .then((animationCode: string) => getAnimationName(animationCode))
       .then((animationName: string) => this.selectCustomAnimation(animationName))
       .then((animationName: string) => this.toast.success(`Animation ${animationName} added`))
       .catch((_: any) => this.toast.error('Error adding animation - try again with different file!'))
-  }
-
-  onCustomAnimationAdded(data: string): Promise<string> {
-    const animationCode = data.replace("export {}", "")
-    if (!animationCode.includes("registerAnimator") || !animationCode.includes("animationName")) {
-      return Promise.reject(null)
-    } else {
-      eval(animationCode)
-      return Promise.resolve(animationCode)
-    }
-  }
-
-  getAnimationName(animationCode: string): Promise<string> {
-    try {
-      let animationName = animationCode.split("animationName = '")[1]
-      animationName = animationName.split("';")[0]
-      return Promise.resolve(animationName)
-    } catch (e) {
-      return Promise.reject(null)
-    }
   }
 
   selectCustomAnimation(animationName: string): Promise<string> {
