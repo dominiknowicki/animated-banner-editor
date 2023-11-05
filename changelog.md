@@ -1,3 +1,5 @@
+### Version 0.1.2
+- Setting the size of the component to match the size of selected background
 ### Version 0.1.1
 - Custom Animation can be added
 - Adjustable width of Animated Banner's parent

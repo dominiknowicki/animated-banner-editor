@@ -76,16 +76,29 @@ export class ParamsComponent implements OnInit {
 
   onUrlEntered(event: any) {
     this.customBackgroundImage = event.target.value
-    this.onUpdate()
+      const image = new Image()
+      image.onload = () => {
+        // setting width and height of canvas to match image
+        this.params.width = image.width
+        this.params.height = image.height
+        this.onUpdate()
+      }
+      image.src = this.customBackgroundImage
   }
 
   onFileUpload(event: any) {
     const file = event.target.files[0]
     const reader = new FileReader()
     reader.onload = () => {
-      // TODO: set canvas width and height to image width and height?
       this.customBackgroundImage = reader.result as string
-      this.onUpdate()
+      const image = new Image()
+      image.onload = () => {
+        // setting width and height of canvas to match image
+        this.params.width = image.width
+        this.params.height = image.height
+        this.onUpdate()
+      }
+      image.src = this.customBackgroundImage
     }
     reader.readAsDataURL(file)
   }
