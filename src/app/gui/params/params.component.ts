@@ -1,9 +1,8 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core'
-import {MatDialog} from '@angular/material/dialog'
-import {ShowCodeDialog} from "../show-code-dialog/show-code-dialog.component"
 import {Params} from "@angular/router"
 import {DEFAULT_PARAMS} from "../../model/component-params"
-import {MatSnackBar} from "@angular/material/snack-bar";
+import {ToastService} from "../../shared/services/toast/toast.service";
+import {CodeDialogService} from "../show-code-dialog/code-dialog.service";
 
 @Component({
   selector: 'app-params',
@@ -21,8 +20,8 @@ export class ParamsComponent implements OnInit {
 
 
   constructor(
-    public dialog: MatDialog,
-    public snackBar: MatSnackBar
+    public codeDialog: CodeDialogService,
+    public toast: ToastService
   ) {
   }
 
@@ -82,10 +81,13 @@ export class ParamsComponent implements OnInit {
     return updatedParams
   }
 
-  onUrlEntered(event: any) {
+  onUrlEntered(event: any): void {
     this.customBackgroundImage = event.target.value
     const image = new Image()
     image.onload = () => {
+      if (image.width > 1500 || image.height > 1500) {
+        return this.toast.error('File too large - please use smaller one')
+      }
       // setting width and height of canvas to match image
       this.params.width = image.width
       this.params.height = image.height
@@ -96,11 +98,17 @@ export class ParamsComponent implements OnInit {
 
   onFileUpload(event: any) {
     const file = event.target.files[0]
+    if (file.size > 524288) {
+      return this.toast.error(`File too large - please use files up to 0,5MB`)
+    }
     const reader = new FileReader()
     reader.onload = () => {
       this.customBackgroundImage = reader.result as string
       const image = new Image()
       image.onload = () => {
+        if (image.width > 1500 || image.height > 1500) {
+          return this.toast.error('File too large - please use smaller one')
+        }
         // setting width and height of canvas to match image
         this.params.width = image.width
         this.params.height = image.height
@@ -116,27 +124,16 @@ export class ParamsComponent implements OnInit {
   }
 
   openShowCodeDialog(): void {
-    const paramsToDisplay = this.applyCustomParams(this.params)
-    this.dialog.open(ShowCodeDialog, {
-      width: '80vw',
-      enterAnimationDuration: 0,
-      exitAnimationDuration: 0,
-      data: paramsToDisplay
-    })
+    const paramsToDisplay: Params = this.applyCustomParams(this.params)
+    this.codeDialog.open(paramsToDisplay)
   }
 
   onAnimationFileLoaded(data: string): void {
     if (data) this.onCustomAnimationAdded(data)
       .then((animationCode: string) => this.getAnimationName(animationCode))
       .then((animationName: string) => this.selectCustomAnimation(animationName))
-      .then((animationName: string) => this.snackBar.open(`Animation ${animationName} added`, 'OK', {
-        duration: 5000,
-        panelClass: ['success-snackbar']
-      }))
-      .catch((_: any) => this.snackBar.open(`Error adding animation - try again with different file!`, 'OK', {
-        duration: 10000,
-        panelClass: ['error-snackbar']
-      }))
+      .then((animationName: string) => this.toast.success(`Animation ${animationName} added`))
+      .catch((_: any) => this.toast.error('Error adding animation - try again with different file!'))
   }
 
   onCustomAnimationAdded(data: string): Promise<string> {

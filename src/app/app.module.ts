@@ -17,6 +17,8 @@ import {NpmTabComponent} from "./gui/show-code-dialog/tabs/npm-tab.component";
 import {ReactTabComponent} from "./gui/show-code-dialog/tabs/react-tab.component";
 import {VueTabComponent} from "./gui/show-code-dialog/tabs/vue-tab.component";
 import {CdnTabComponent} from "./gui/show-code-dialog/tabs/cdn-tab.component";
+import {ToastService} from "./shared/services/toast/toast.service";
+import {CodeDialogService} from "./gui/show-code-dialog/code-dialog.service";
 
 @NgModule({
   declarations: [
@@ -42,7 +44,10 @@ import {CdnTabComponent} from "./gui/show-code-dialog/tabs/cdn-tab.component";
     NgxColorsModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  providers: [],
+  providers: [
+    CodeDialogService,
+    ToastService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
