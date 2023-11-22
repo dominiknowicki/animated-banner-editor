@@ -11,8 +11,9 @@
       <mat-option *ngFor="let animation of animationList" [value]="animation">{{animation}}</mat-option>
     </mat-select>
   </mat-form-field>
-  <label class="no-margin compound-param-child compound-param-button">
-    <button mat-stroked-button color="white" (click)="openAddAnimationDialog()">Add animation</button>
+  <label class="no-margin compound-param-child custom-file-upload">
+    <input type="file" accept="application/javascript, text/javascript" (change)="onAnimationFileUpload($event)">
+    Add animation
   </label>
 </div>
 
@@ -25,8 +26,8 @@
       <mat-option value="url('assets/media/yarsCross_1000x750.jpg')">Yaris Cross</mat-option>
       <mat-option value="white">white</mat-option>
       <mat-option value="customBackgroundColor">custom color</mat-option>
-      <mat-option value="customBackgroundImage">upload background</mat-option>
-      <mat-option value="customUrlBackgroundImage">link to background</mat-option>
+      <mat-option value="customBackgroundImage">custom local file</mat-option>
+      <mat-option value="customUrlBackgroundImage">URL</mat-option>
     </mat-select>
   </mat-form-field>
   <ngx-colors
@@ -36,18 +37,15 @@
   </ngx-colors>
   <label *ngIf="params.background === 'customBackgroundImage'"
          class="no-margin compound-param-child custom-file-upload">
-    <input type="file" (change)="onFileUpload($event)">
+    <input type="file" accept="image/*" (change)="onFileUpload($event)">
     Choose file
   </label>
-  <!--  TODO: update button label to a file name-->
   <label *ngIf="params.background === 'customUrlBackgroundImage'"
          class="no-margin compound-param-child custom-file-url-input">
     <input type="text" (change)="onUrlEntered($event)" style="border: none">
   </label>
 
 </div>
-
-<!--// TODO read height/width form file-->
 
 <div class="flex-controls-container">
   <mat-form-field appearance="outline" style="max-width: 120px">

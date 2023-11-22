@@ -1,9 +1,10 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core'
-import {MatDialog} from '@angular/material/dialog'
-import {ShowCodeDialog} from "../show-code-dialog/show-code-dialog.component"
 import {Params} from "@angular/router"
 import {DEFAULT_PARAMS} from "../../model/component-params"
-import {AddAnimationDialog} from "../add-animation-dialog/add-animation-dialog.component";
+import {ToastService} from "../../shared/services/toast/toast.service";
+import {CodeDialogService} from "../show-code-dialog/code-dialog.service";
+import {getAnimationName, registerCustomAnimation} from "./params.utils";
+import {MatSnackBarRef} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-params',
@@ -21,7 +22,8 @@ export class ParamsComponent implements OnInit {
 
 
   constructor(
-    public dialog: MatDialog
+    public codeDialog: CodeDialogService,
+    public toast: ToastService
   ) {
   }
 
@@ -74,20 +76,36 @@ export class ParamsComponent implements OnInit {
     return updatedParams
   }
 
-  onUrlEntered(event: any) {
-    this.customBackgroundImage = event.target.value
-    this.onUpdate()
+  onUrlEntered(event: any): void {
+    const image: HTMLImageElement = new Image()
+    image.onload = this.onBackgroundImageLoaded.bind(this)
+    image.src = event.target.value
   }
 
-  onFileUpload(event: any) {
+  onFileUpload(event: any): MatSnackBarRef<any> | void {
     const file = event.target.files[0]
+    if (file.size > 524288/2) {
+      return this.toast.error(`File too large - please use files up to 0,25MB`)
+    }
     const reader = new FileReader()
-    reader.onload = () => {
-      // TODO: set canvas width and height to image width and height?
-      this.customBackgroundImage = reader.result as string
-      this.onUpdate()
+    reader.onload = (): void => {
+      const image: HTMLImageElement = new Image()
+      image.onload = this.onBackgroundImageLoaded.bind(this)
+      image.src = reader.result as string
     }
     reader.readAsDataURL(file)
+  }
+
+  onBackgroundImageLoaded(event: any): MatSnackBarRef<any> | void {
+    const image: HTMLImageElement = event.target as HTMLImageElement
+    if (image.width > 1500 || image.height > 1500) {
+      return this.toast.error('File too large - please use smaller one')
+    }
+    // setting width and height of canvas to match image
+    this.params.width = image.width
+    this.params.height = image.height
+    this.customBackgroundImage = image.src
+    this.onUpdate()
   }
 
   restartAnimation(): void {
@@ -95,63 +113,32 @@ export class ParamsComponent implements OnInit {
   }
 
   openShowCodeDialog(): void {
-    const paramsToDisplay = this.applyCustomParams(this.params)
-    this.dialog.open(ShowCodeDialog, {
-      width: '80vw',
-      enterAnimationDuration: 0,
-      exitAnimationDuration: 0,
-      data: paramsToDisplay
-    })
+    const paramsToDisplay: Params = this.applyCustomParams(this.params)
+    this.codeDialog.open(paramsToDisplay)
   }
 
-  openAddAnimationDialog(): void {
-    const dialogRef = this.dialog.open(AddAnimationDialog, {
-      width: '80vw',
-      enterAnimationDuration: 0,
-      exitAnimationDuration: 0,
-      data: {}
-    })
-    dialogRef.afterClosed()
-      .subscribe((data: any): void => {
-        if (data) this.onCustomAnimationAdded(data)
-          .then((animationCode: string) => this.getAnimationName(animationCode))
-          .then((animationName: string) => this.addCustomAnimationToDropdown(animationName))
-          .then((animationName: string) => this.selectCustomAnimation(animationName))
-      })
-    // TODO: show error in toast if animation is not valid?
+  onAnimationFileUpload(event: any): void {
+    const file = event.target.files[0]
+    const reader = new FileReader()
+    reader.onload = () => this.onAnimationFileLoaded(reader.result as string)
+    reader.readAsText(file)
   }
 
-  // TODO: maybe add animations from file with a file upload?
-  onCustomAnimationAdded(data: string): Promise<string> {
-    const animationCode = data.replace("export {}", "")
-    if (!animationCode.includes("registerAnimator") || !animationCode.includes("animationName")) {
-      return Promise.reject(null)
-    } else {
-      eval(animationCode)
-      return Promise.resolve(animationCode)
-    }
+  onAnimationFileLoaded(data: string): void {
+    if (data) registerCustomAnimation(data)
+      .then((animationCode: string) => getAnimationName(animationCode))
+      .then((animationName: string) => this.selectCustomAnimation(animationName))
+      .then((animationName: string) => this.toast.success(`Animation ${animationName} added`))
+      .catch((_: any) => this.toast.error('Error adding animation - try again with different file!'))
   }
 
-  getAnimationName(animationCode: string): Promise<string> {
-    try {
-      let animationName = animationCode.split("animationName = '")[1]
-      animationName = animationName.split("';")[0]
-      return Promise.resolve(animationName)
-    } catch (e) {
-      return Promise.reject(null)
-    }
-  }
-
-  addCustomAnimationToDropdown(animationName: string): Promise<string> {
+  selectCustomAnimation(animationName: string): Promise<string> {
+    if (!animationName) return Promise.reject(null)
     this.animationList.unshift(animationName)
-    return Promise.resolve(animationName)
-  }
-
-  selectCustomAnimation(animationName: string): void {
-    if (!animationName) return
     this.params.animation = animationName
     this.onUpdate()
     this.getAnimationParams()
     this.restartAnimation()
+    return Promise.resolve(animationName)
   }
 }
