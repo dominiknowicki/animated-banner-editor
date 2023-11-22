@@ -3,6 +3,7 @@
 - Setting the size of the component to match the size of selected background
 - Update style of inputs with nested buttons and inputs
 - Limiting background size 
+- Show info message when code is copied to clipboard
 ### Version 0.1.1
 - Custom Animation can be added
 - Adjustable width of Animated Banner's parent

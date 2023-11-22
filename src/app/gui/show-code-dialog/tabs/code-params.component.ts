@@ -1,6 +1,7 @@
 import {Component, Input} from '@angular/core'
 import {copyToClipboard} from "../../../shared/utils";
 import {COMPONENT_PARAMS} from "../../../model/component-params";
+import {ToastService} from "../../../shared/services/toast/toast.service";
 
 @Component({
   selector: 'app-code-params',
@@ -41,8 +42,14 @@ export class CodeParamsComponent {
     }
   }
 
+  constructor(
+    public toast: ToastService
+  ) {
+  }
+
   public copy(text): void {
     copyToClipboard(text)
+    this.toast.info('Copied to clipboard!')
   }
 
   private getCommonParams(): string {
