@@ -1,4 +1,5 @@
 import {Component, Input} from '@angular/core'
+import {MenuService} from "../../shared/services/menu/menu.service";
 
 @Component({
   selector: 'app-playground',
@@ -6,11 +7,15 @@ import {Component, Input} from '@angular/core'
   styleUrls: ['./playground.component.scss']
 })
 export class PlaygroundComponent {
-  @Input() showParams: boolean
+  public showParams: boolean
 
   _reloaded = true
   params = null
   width = 300
+
+  constructor(private menuService: MenuService) {
+    this.menuService.getDrawerVisibility.subscribe(value => this.showParams = value)
+  }
 
   public get markParent() {
     return this.params?.matchParent ? "background: #eee" : ""

@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Output} from '@angular/core'
 import packageInfo  from '../../../../package.json'
+import {MenuService} from "../../shared/services/menu/menu.service";
 
 @Component({
   selector: 'app-titlebar',
@@ -7,13 +8,22 @@ import packageInfo  from '../../../../package.json'
   styleUrls: ['./titlebar.component.scss']
 })
 export class TitlebarComponent {
-  @Output() drawerVisibilityEmitter = new EventEmitter<boolean>()
-  drawerVisibility = true
-
+  public drawerVisibility = true
   public version = packageInfo.version
+
+  constructor(private menuService: MenuService) {
+  }
+
+  restartAnimation() {
+    this.menuService.emitRestartAnimation()
+  }
+
+  showCodeDialog() {
+    this.menuService.emitShowCode()
+  }
 
   toggleDrawer() {
     this.drawerVisibility = !this.drawerVisibility
-    this.drawerVisibilityEmitter.emit(this.drawerVisibility)
+    this.menuService.setDrawerVisibility(this.drawerVisibility)
   }
 }

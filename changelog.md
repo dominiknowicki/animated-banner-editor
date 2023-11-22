@@ -4,6 +4,8 @@
 - Update style of inputs with nested buttons and inputs
 - Limiting background size 
 - Show info message when code is copied to clipboard
+- Show code and restart animation buttons moved to title bar to save space
+- Scroll for params list added for smaller screens
 ### Version 0.1.1
 - Custom Animation can be added
 - Adjustable width of Animated Banner's parent
