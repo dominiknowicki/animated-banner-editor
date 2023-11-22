@@ -29,6 +29,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   margin: 5px 0;
   width: 100%;
   word-break: break-all;
+  overflow-x: hidden;
 }
 
 .prevent-select {
@@ -51,6 +52,14 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     --mdc-snackbar-container-color: #f44336;
     --mat-mdc-snack-bar-button-color: #fff;
     --mdc-snackbar-supporting-text-color: #fff;
+  }
+}
+
+.mat-mdc-snack-bar-container {
+  &.info-snackbar {
+    --mdc-snackbar-container-color: #eee;
+    --mat-mdc-snack-bar-button-color: #666;
+    --mdc-snackbar-supporting-text-color: #666;
   }
 }
 
