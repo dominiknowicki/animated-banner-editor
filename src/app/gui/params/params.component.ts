@@ -5,6 +5,7 @@ import {ToastService} from "../../shared/services/toast/toast.service";
 import {CodeDialogService} from "../show-code-dialog/code-dialog.service";
 import {getAnimationName, registerCustomAnimation} from "./params.utils";
 import {MatSnackBarRef} from "@angular/material/snack-bar";
+import {MenuService} from "../../shared/services/menu/menu.service";
 
 @Component({
   selector: 'app-params',
@@ -23,8 +24,11 @@ export class ParamsComponent implements OnInit {
 
   constructor(
     public codeDialog: CodeDialogService,
-    public toast: ToastService
+    public toast: ToastService,
+    private menuService: MenuService,
   ) {
+    this.menuService.getRestartAnimationSubject.subscribe(_ => this.restartAnimation())
+    this.menuService.getShowCodeSubject.subscribe(_ => this.openShowCodeDialog())
   }
 
   get animationParamsKeys(): string[] {

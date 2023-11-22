@@ -19,6 +19,7 @@ import {VueTabComponent} from "./gui/show-code-dialog/tabs/vue-tab.component";
 import {CdnTabComponent} from "./gui/show-code-dialog/tabs/cdn-tab.component";
 import {ToastService} from "./shared/services/toast/toast.service";
 import {CodeDialogService} from "./gui/show-code-dialog/code-dialog.service";
+import {MenuService} from "./shared/services/menu/menu.service";
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import {CodeDialogService} from "./gui/show-code-dialog/code-dialog.service";
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [
     CodeDialogService,
-    ToastService
+    ToastService,
+    MenuService,
   ],
   bootstrap: [AppComponent]
 })
