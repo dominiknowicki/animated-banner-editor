@@ -19,7 +19,7 @@ export class ParamsComponent implements OnInit {
   public customColor = "red"
   public customBackgroundColor = "red"
   public customBackgroundImage: string
-  public animationList: string[] = ['slide-right', 'slide-in-from-left', 'fade-in-out']
+  public animationList: string[] = ['slide-right', 'slide-in-from-left', 'fade-in-out', 'slide-right-object']
 
 
   constructor(

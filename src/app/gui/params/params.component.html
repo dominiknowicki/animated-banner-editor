@@ -11,6 +11,7 @@
       <mat-option value="url('assets/media/corollaSedan_1000x750.jpg')">Corolla Sedan</mat-option>
       <mat-option value="url('assets/media/corollaHatchback_1000x750.jpg')">Corolla Hatchback</mat-option>
       <mat-option value="url('assets/media/yarsCross_1000x750.jpg')">Yaris Cross</mat-option>
+      <mat-option value="url('assets/media/sky.jpg')">Sky by night</mat-option>
       <mat-option value="white">white</mat-option>
       <mat-option value="customBackgroundColor">custom color</mat-option>
       <mat-option value="customBackgroundImage">custom local file</mat-option>
@@ -91,6 +92,36 @@
 
   <ng-container *ngIf="animationParams">
     <ng-container *ngFor="let key of animationParamsKeys">
+
+      <div
+        *ngIf="animationParams[key].type==='image'"
+        class="compound-param-container ">
+        <mat-form-field appearance="outline">
+          <mat-label>{{animationParams[key].label}}</mat-label>
+          <mat-select [(ngModel)]="params[key]" (ngModelChange)="onUpdate()">
+            <mat-option value="assets/media/philips-oneblade-h.png">philips oneblade</mat-option>
+            <mat-option value="assets/media/philips-shaver-h.png">philips shaver</mat-option>
+            <mat-option value="customBackgroundColor" disabled >custom color</mat-option>
+            <mat-option value="customBackgroundImage" disabled>custom local file</mat-option>
+            <mat-option value="customUrlBackgroundImage" disabled>URL</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <ngx-colors
+          *ngIf="params[key] === 'customBackgroundColor'"
+          class="compound-param-child" ngx-colors-trigger
+          [(ngModel)]="customBackgroundColor" (ngModelChange)="onUpdate()">
+        </ngx-colors>
+        <label *ngIf="params[key] === 'customBackgroundImage'"
+               class="no-margin compound-param-child custom-file-upload">
+          <input type="file" accept="image/*" (change)="onFileUpload($event)">
+          Choose file
+        </label>
+        <label *ngIf="params[key] === 'customUrlBackgroundImage'"
+               class="no-margin compound-param-child custom-file-url-input">
+          <input type="text" (change)="onUrlEntered($event)" style="border: none">
+        </label>
+
+      </div>
 
       <mat-form-field *ngIf="animationParams[key].type==='input'" appearance="outline">
         <mat-label>{{animationParams[key].label}}</mat-label>
