@@ -20,12 +20,14 @@ import {CdnTabComponent} from "./gui/show-code-dialog/tabs/cdn-tab.component";
 import {ToastService} from "./shared/services/toast/toast.service";
 import {CodeDialogService} from "./gui/show-code-dialog/code-dialog.service";
 import {MenuService} from "./shared/services/menu/menu.service";
+import {AnimationParamsComponent} from "./gui/params/animation-params/animation-params.component";
 
 @NgModule({
   declarations: [
     AppComponent,
     TitlebarComponent,
     ParamsComponent,
+    AnimationParamsComponent,
     PlaygroundComponent,
     ShowCodeDialog,
     AngularTabComponent,

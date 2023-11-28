@@ -1,15 +1,4 @@
 :host {
-  background: white;
-  position: fixed;
-  right: 0;
-  top: 64px;
-  width: 500px;
-  height: 90%;
-  border-left: 1px solid #ddd;
-  z-index: 0;
-  padding: 20px;
-  transition: right 250ms;
-  overflow-y: auto;
 
   .flex-controls-container {
     width: 100%;

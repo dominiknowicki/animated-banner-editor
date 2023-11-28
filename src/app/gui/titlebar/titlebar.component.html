@@ -3,16 +3,19 @@
   <span>Animated Banner Editor v.{{version}}</span>
   <span class="title-bar-spacer"></span>
   <button
+    matTooltip="Show generated code"
     (click)="showCodeDialog()"
     mat-icon-button>
     <mat-icon>code</mat-icon>
   </button>
   <button
+    matTooltip="Restart animation"
     (click)="restartAnimation()"
     mat-icon-button>
     <mat-icon>replay</mat-icon>
   </button>
   <button
+    [matTooltip]="drawerVisibility ? 'Hide parameters' : 'Show parameters'"
     (click)="toggleDrawer()"
     mat-icon-button>
     <mat-icon>menu</mat-icon>

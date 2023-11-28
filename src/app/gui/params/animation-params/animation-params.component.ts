@@ -1,22 +1,20 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core'
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core'
 import {Params} from "@angular/router"
-import {DEFAULT_PARAMS} from "../../model/component-params"
-import {ToastService} from "../../shared/services/toast/toast.service";
-import {CodeDialogService} from "../show-code-dialog/code-dialog.service";
-import {getAnimationName, registerCustomAnimation} from "./params.utils";
+import {DEFAULT_PARAMS} from "../../../model/component-params"
+import {ToastService} from "../../../shared/services/toast/toast.service";
+import {CodeDialogService} from "../../show-code-dialog/code-dialog.service";
+import {getAnimationName, registerCustomAnimation} from "../params.utils";
 import {MatSnackBarRef} from "@angular/material/snack-bar";
-import {MenuService} from "../../shared/services/menu/menu.service";
+import {MenuService} from "../../../shared/services/menu/menu.service";
 
 @Component({
-  selector: 'app-params',
-  templateUrl: './params.component.html',
-  styleUrls: ['./params.component.scss']
+  selector: 'app-animation-params',
+  templateUrl: './animation-params.component.html',
+  styleUrls: ['./animation-params.component.scss']
 })
-export class ParamsComponent implements OnInit {
-  @Output() paramEmitter = new EventEmitter<object>()
-  public paramsList = [DEFAULT_PARAMS]
-  public open: boolean[] = [true]
-  public params: Params = DEFAULT_PARAMS
+export class AnimationParamsComponent implements OnInit {
+  @Input() params
+  @Output() onParamsChange = new EventEmitter<object>()
   public animationParams: any
   public customColor = "red"
   public customBackgroundColor = "red"
@@ -61,20 +59,8 @@ export class ParamsComponent implements OnInit {
     window.dispatchEvent(new CustomEvent(`get-${this.params.animation}-params`))
   }
 
-  // TODO: rozdzielic parametry komponentu (background,wymiary, matchparent) od parametrow animacji
-  // TODO: text wprowadzic do parametrow animacji
-  onParamsChange(data: any): void {
-    console.log('Params changed: ', data)
-    for (const key in data) {
-      if (data.hasOwnProperty(key)) {
-        this.params[key] = data[key]
-      }
-    }
-    this.onUpdate()
-  }
-
   onUpdate(): void {
-    this.paramEmitter.emit(this.applyCustomParams(this.params))
+    this.onParamsChange.emit(this.applyCustomParams(this.params))
   }
 
   applyCustomParams(params: Params): Params {
@@ -102,7 +88,7 @@ export class ParamsComponent implements OnInit {
 
   onFileUpload(event: any): MatSnackBarRef<any> | void {
     const file = event.target.files[0]
-    if (file.size > 524288 / 2) {
+    if (file.size > 524288/2) {
       return this.toast.error(`File too large - please use files up to 0,25MB`)
     }
     const reader = new FileReader()
@@ -158,13 +144,5 @@ export class ParamsComponent implements OnInit {
     this.getAnimationParams()
     this.restartAnimation()
     return Promise.resolve(animationName)
-  }
-
-  addNextAnimation(): void {
-    this.paramsList.push(DEFAULT_PARAMS)
-  }
-
-  removeAnimation(index: number): void {
-    this.paramsList.splice(index, 1)
   }
 }
