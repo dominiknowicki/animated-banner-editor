@@ -8,13 +8,15 @@ import {MenuService} from "../../shared/services/menu/menu.service";
 })
 export class PlaygroundComponent {
   public showParams: boolean
+  public showMenu: boolean
 
   _reloaded = true
   params = null
   width = 300
 
   constructor(private menuService: MenuService) {
-    this.menuService.getDrawerVisibility.subscribe(value => this.showParams = value)
+    this.menuService.getAppParamsDrawerVisibility.subscribe(value => this.showParams = value)
+    this.menuService.getAppMenuDrawerVisibility.subscribe(value => this.showMenu = value)
   }
 
   public get markParent() {

@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core'
 import {copyToClipboard} from "../../../shared/utils";
-import {COMPONENT_PARAMS} from "../../../model/component-params";
 import {ToastService} from "../../../shared/services/toast/toast.service";
+import {ComponentParams} from "../../../model/component-params";
 
 @Component({
   selector: 'app-code-params',
@@ -11,7 +11,7 @@ export class CodeParamsComponent {
 
   @Input() elementId: string
   @Input() framework: string
-  @Input() data: any // TODO: type that extends ComponentParams
+  @Input() data: ComponentParams
 
   public getText(): string {
     switch (this.framework) {
@@ -49,13 +49,11 @@ export class CodeParamsComponent {
 
   public copy(text): void {
     copyToClipboard(text)
-    this.toast.info('Copied to clipboard!')
+    this.toast.success('Copied to clipboard!')
   }
 
   private getCommonParams(): string {
-    return `text="${this.data.text}"
-      animation="${this.data.animation}"
-      width="${this.data.width}"
+    return `width="${this.data.width}"
       height="${this.data.height}"
       match-parent="${this.data.matchParent}"
       background="${this.data.background}"`
@@ -63,9 +61,12 @@ export class CodeParamsComponent {
 
   private getAnimationParams(): string {
     let result: string = '{\n'
-    Object.keys(this.data).forEach(key => {
-      // TODO: remove params that are not needed for current animation but maybe left in data
-      if (!COMPONENT_PARAMS.includes(key)) result += `\t\t"${key}": "${this.data[key]}",\n`
+    this.data.animations.forEach(animation => {
+      result += '\t\t[\n'
+      Object.keys(animation).forEach(key => {
+        result += `\t\t"${key}": "${String(animation[key]).replaceAll('\n', '')}",\n`
+      })
+      result += '\t\t],\n'
     })
     return result + '\t\t}'
   }

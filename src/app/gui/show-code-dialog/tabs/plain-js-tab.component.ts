@@ -15,7 +15,8 @@ export class PlainJsTabComponent {
   @Input() data: ComponentParams
   public link1: string = "<script src='/animated-banner-component/dist/animated-banner-component.esm.js'></script>"
   public get link2(): string {
-    return `<script type='module' src='https://unpkg.com/browse/animated-banner@${packageInfo.version}/dist/animations/${this.data.animation}.js'></script>`
+    // TODO: print all animations names
+    return `<script type='module' src='https://unpkg.com/browse/animated-banner@${packageInfo.version}/dist/animations/${this.data.animations[0]}.js'></script>`
   }
 
   constructor(
@@ -25,6 +26,6 @@ export class PlainJsTabComponent {
 
   public copy(text): void {
     copyToClipboard(text)
-    this.toast.info('Copied to clipboard!')
+    this.toast.success('Copied to clipboard!')
   }
 }

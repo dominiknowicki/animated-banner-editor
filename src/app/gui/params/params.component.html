@@ -7,10 +7,11 @@
 <div class="compound-param-container ">
   <mat-form-field appearance="outline">
     <mat-label>Background</mat-label>
-    <mat-select [(ngModel)]="params.background" (ngModelChange)="onUpdate()">
+    <mat-select [(ngModel)]="componentParams.background" (ngModelChange)="onUpdate()">
       <mat-option value="url('assets/media/corollaSedan_1000x750.jpg')">Corolla Sedan</mat-option>
       <mat-option value="url('assets/media/corollaHatchback_1000x750.jpg')">Corolla Hatchback</mat-option>
       <mat-option value="url('assets/media/yarsCross_1000x750.jpg')">Yaris Cross</mat-option>
+      <mat-option value="url('assets/media/sky.jpg')">Sky by night</mat-option>
       <mat-option value="white">white</mat-option>
       <mat-option value="customBackgroundColor">custom color</mat-option>
       <mat-option value="customBackgroundImage">custom local file</mat-option>
@@ -18,16 +19,16 @@
     </mat-select>
   </mat-form-field>
   <ngx-colors
-    *ngIf="params.background === 'customBackgroundColor'"
+    *ngIf="componentParams.background === 'customBackgroundColor'"
     class="compound-param-child" ngx-colors-trigger
     [(ngModel)]="customBackgroundColor" (ngModelChange)="onUpdate()">
   </ngx-colors>
-  <label *ngIf="params.background === 'customBackgroundImage'"
+  <label *ngIf="componentParams.background === 'customBackgroundImage'"
          class="no-margin compound-param-child custom-file-upload">
     <input type="file" accept="image/*" (change)="onFileUpload($event)">
     Choose file
   </label>
-  <label *ngIf="params.background === 'customUrlBackgroundImage'"
+  <label *ngIf="componentParams.background === 'customUrlBackgroundImage'"
          class="no-margin compound-param-child custom-file-url-input">
     <input type="text" (change)="onUrlEntered($event)" style="border: none">
   </label>
@@ -37,12 +38,12 @@
 <div class="flex-controls-container">
   <mat-form-field appearance="outline" style="max-width: 120px">
     <mat-label>Width</mat-label>
-    <input matInput type="number" [(ngModel)]="params.width" (ngModelChange)="onUpdate()">
+    <input matInput type="number" [(ngModel)]="componentParams.width" (ngModelChange)="onUpdate()">
   </mat-form-field>
 
   <mat-form-field appearance="outline" style="max-width: 120px">
     <mat-label>Height</mat-label>
-    <input matInput type="number" [(ngModel)]="params.height" (ngModelChange)="onUpdate()">
+    <input matInput type="number" [(ngModel)]="componentParams.height" (ngModelChange)="onUpdate()">
   </mat-form-field>
 
   <div class="compound-param-container" style="max-width: 140px">
@@ -58,92 +59,42 @@
                 fontIcon="information"></mat-icon>
     </div>
     <mat-slide-toggle
-      [(ngModel)]="params.matchParent"
+      [(ngModel)]="componentParams.matchParent"
       (ngModelChange)="onUpdate()">
     </mat-slide-toggle>
   </div>
 </div>
 
-<h4 matTooltip="Params of animation - can be different for each animation">
-  Animation params
-  <mat-icon aria-hidden="false" class="tooltip-icon"
-            aria-label="Params of animation - can be different for each animation" fontIcon="information"></mat-icon>
-</h4>
-
-<div style="max-height: 100%; overflow-y: auto; padding-top: 4px">
-  <div class="compound-param-container ">
-    <mat-form-field appearance="outline">
-      <mat-label>Animation</mat-label>
-      <mat-select [(ngModel)]="params.animation" (ngModelChange)="onUpdate(); getAnimationParams();">
-        <mat-option *ngFor="let animation of animationList" [value]="animation">{{animation}}</mat-option>
-      </mat-select>
-    </mat-form-field>
-    <label class="no-margin compound-param-child custom-file-upload">
-      <input type="file" accept="application/javascript, text/javascript" (change)="onAnimationFileUpload($event)">
-      Add animation
-    </label>
+<ng-container
+  *ngFor="let paramsSet of componentParams.animations; let i = index">
+  <div>
+    <div
+      style="cursor: pointer"
+      (click)="animationListPanelOpen[i] = !animationListPanelOpen[i]">
+      <div style="display:flex;">
+        <mat-icon
+          [style]="animationListPanelOpen[i] ? 'position: relative; top: 7px' : 'position: relative; top: 7px; transform: rotate(-90deg)'"
+        >expand_more
+        </mat-icon>
+        <h4 style="margin: 7px;">
+          Animation #{{i + 1}}: {{ paramsSet.animationName }}
+        </h4>
+        <button
+          *ngIf="componentParams.animations.length > 1"
+          style="position: relative; top: -5px; color: #666"
+          mat-icon-button
+          (click)="removeAnimation(i)"
+          matTooltip="Remove this animation">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </div>
+    <app-animation-params
+      [style]="animationListPanelOpen[i] ? '' : 'display: none'"
+      [params]="paramsSet"
+      (onParamsChange)="onAnimationParamsChange($event)">
+    </app-animation-params>
   </div>
+</ng-container>
 
-  <mat-form-field appearance="outline">
-    <mat-label>Text</mat-label>
-    <input matInput [(ngModel)]="params.text" (ngModelChange)="onUpdate()">
-  </mat-form-field>
-
-  <ng-container *ngIf="animationParams">
-    <ng-container *ngFor="let key of animationParamsKeys">
-
-      <mat-form-field *ngIf="animationParams[key].type==='input'" appearance="outline">
-        <mat-label>{{animationParams[key].label}}</mat-label>
-        <input matInput [(ngModel)]="params[key]" (ngModelChange)="onUpdate()">
-      </mat-form-field>
-
-      <mat-form-field *ngIf="animationParams[key].type==='number'" appearance="outline">
-        <mat-label>{{animationParams[key].label}}</mat-label>
-        <input matInput type="number" [(ngModel)]="params[key]" (ngModelChange)="onUpdate()"
-               [min]="animationParams[key]['min']" [max]="animationParams[key].max">
-      </mat-form-field>
-
-      <mat-form-field *ngIf="animationParams[key].type==='select'" appearance="outline">
-        <mat-label>{{animationParams[key].label}}</mat-label>
-        <mat-select [(ngModel)]="params[key]" (ngModelChange)="onUpdate()">
-          <mat-option *ngFor="let option of animationParams[key].options"
-                      [value]="option"
-          >{{option}}</mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <div
-        *ngIf="animationParams[key].type==='color'"
-        class="compound-param-container">
-        <mat-form-field appearance="outline">
-          <mat-label>{{animationParams[key].label}}</mat-label>
-          <mat-select [(ngModel)]="params[key]" (ngModelChange)="onUpdate()">
-            <mat-option value="black">black</mat-option>
-            <mat-option value="white">white</mat-option>
-            <mat-option value="#666">gray</mat-option>
-            <mat-option value="customColor">custom color
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <ngx-colors
-          *ngIf="params.color === 'customColor'"
-          class="compound-param-child" ngx-colors-trigger
-          [(ngModel)]="customColor" (ngModelChange)="onUpdate()">
-        </ngx-colors>
-      </div>
-
-      <div
-        *ngIf="animationParams[key].type==='boolean'"
-        class="compound-param-container slide-toggle__spacing">
-        <mat-slide-toggle
-          [(ngModel)]="params[key]"
-          (ngModelChange)="onUpdate()">
-          <span class="slide-label-span">{{animationParams[key].label}}</span>
-        </mat-slide-toggle>
-      </div>
-
-    </ng-container>
-  </ng-container>
-
-  <div style="display: block; height: 24px"></div>
-</div>
+<button mat-stroked-button (click)="addNextAnimation()">Add animation</button>

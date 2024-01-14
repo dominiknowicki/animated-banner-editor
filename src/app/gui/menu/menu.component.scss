@@ -1,0 +1,42 @@
+:host {
+  background: white;
+  position: fixed;
+  left: -300px;
+  top: 64px;
+  width: 300px;
+  height: calc(100% - 64px);
+  border-right: 1px solid #ddd;
+  z-index: 0;
+  padding: 20px;
+  transition: left 250ms;
+  overflow-y: auto;
+
+  button {
+    margin-top: 12px;
+  }
+
+  input[type="file"] {
+    display: none;
+    height: 36px;
+  }
+
+  .custom-file-upload {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    display: inline-block;
+    padding: 4px 12px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 400;
+    height: 36px;
+
+    span {
+      margin-top: 3px;
+      margin-bottom: 3px;
+    }
+  }
+
+  .custom-file-upload:hover {
+    background: #eee;
+  }
+}
