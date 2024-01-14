@@ -4,7 +4,7 @@
   right: 0;
   top: 64px;
   width: 500px;
-  height: 90%;
+  height: calc(100% - 64px);
   border-left: 1px solid #ddd;
   z-index: 0;
   padding: 20px;

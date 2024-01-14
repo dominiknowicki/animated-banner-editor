@@ -1,65 +1,59 @@
-<div class="compound-param-container ">
+<div class="compound-param-container" style="padding-top: 12px">
   <mat-form-field appearance="outline">
     <mat-label>Animation</mat-label>
-    <mat-select [(ngModel)]="params.animation" (ngModelChange)="onUpdate(); getAnimationParams();">
-      <mat-option *ngFor="let animation of animationList" [value]="animation">{{animation}}</mat-option>
+    <mat-select [(ngModel)]="params.animationName" (ngModelChange)="onUpdate(); getAnimationParams();">
+      <mat-option *ngFor="let animation of availableAnimationNames" [value]="animation">{{animation}}</mat-option>
     </mat-select>
   </mat-form-field>
-  <label class="no-margin compound-param-child custom-file-upload">
-    <input type="file" accept="application/javascript, text/javascript" (change)="onAnimationFileUpload($event)">
-    Load custom animation
-  </label>
 </div>
-
-<mat-form-field appearance="outline">
-  <mat-label>Text</mat-label>
-  <input matInput [(ngModel)]="params.text" (ngModelChange)="onUpdate()">
-</mat-form-field>
 
 <ng-container *ngIf="animationParams">
   <ng-container *ngFor="let key of animationParamsKeys">
 
+    <!---IMAGE/COLOR-->
     <div
       *ngIf="animationParams[key].type==='image'"
       class="compound-param-container ">
       <mat-form-field appearance="outline">
         <mat-label>{{animationParams[key].label}}</mat-label>
-        <mat-select [(ngModel)]="params[key]" (ngModelChange)="onUpdate()">
+        <mat-select [(ngModel)]="customParams[key]" (ngModelChange)="applyCustomImage(key); onUpdate()">
           <mat-option value="assets/media/philips-oneblade-h.png">philips oneblade</mat-option>
           <mat-option value="assets/media/philips-shaver-h.png">philips shaver</mat-option>
-          <mat-option value="customBackgroundColor" disabled >custom color</mat-option>
-          <mat-option value="customBackgroundImage" disabled>custom local file</mat-option>
-          <mat-option value="customUrlBackgroundImage" disabled>URL</mat-option>
+<!--          <mat-option value="customBackgroundColor" disabled >custom color</mat-option>-->
+          <mat-option value="customBackgroundImage" >custom local file</mat-option>
+          <mat-option value="customUrlBackgroundImage" >URL</mat-option>
         </mat-select>
       </mat-form-field>
-      <ngx-colors
-        *ngIf="params[key] === 'customBackgroundColor'"
-        class="compound-param-child" ngx-colors-trigger
-        [(ngModel)]="customBackgroundColor" (ngModelChange)="onUpdate()">
-      </ngx-colors>
-      <label *ngIf="params[key] === 'customBackgroundImage'"
+<!--      <ngx-colors-->
+<!--        *ngIf="params[key] === 'customBackgroundColor'"-->
+<!--        class="compound-param-child" ngx-colors-trigger-->
+<!--        [(ngModel)]="customBackgroundColor" (ngModelChange)="onUpdate()">-->
+<!--      </ngx-colors>-->
+      <label *ngIf="customParams[key] === 'customBackgroundImage'"
              class="no-margin compound-param-child custom-file-upload">
-        <input type="file" accept="image/*" (change)="onFileUpload($event)">
+        <input type="file" accept="image/*" (change)="onImageFileUpload($event, key)">
         Choose file
       </label>
-      <label *ngIf="params[key] === 'customUrlBackgroundImage'"
+      <label *ngIf="customParams[key] === 'customUrlBackgroundImage'"
              class="no-margin compound-param-child custom-file-url-input">
-        <input type="text" (change)="onUrlEntered($event)" style="border: none">
+        <input type="text" (change)="onImageUrlEntered($event, key)" style="border: none">
       </label>
-
     </div>
 
-    <mat-form-field *ngIf="animationParams[key].type==='input'" appearance="outline">
+    <!---STRING-->
+    <mat-form-field *ngIf="animationParams[key].type==='string'" appearance="outline">
       <mat-label>{{animationParams[key].label}}</mat-label>
       <input matInput [(ngModel)]="params[key]" (ngModelChange)="onUpdate()">
     </mat-form-field>
 
+    <!---NUMBER-->
     <mat-form-field *ngIf="animationParams[key].type==='number'" appearance="outline">
       <mat-label>{{animationParams[key].label}}</mat-label>
       <input matInput type="number" [(ngModel)]="params[key]" (ngModelChange)="onUpdate()"
              [min]="animationParams[key]['min']" [max]="animationParams[key].max">
     </mat-form-field>
 
+    <!---SELECT-->
     <mat-form-field *ngIf="animationParams[key].type==='select'" appearance="outline">
       <mat-label>{{animationParams[key].label}}</mat-label>
       <mat-select [(ngModel)]="params[key]" (ngModelChange)="onUpdate()">
@@ -69,26 +63,31 @@
       </mat-select>
     </mat-form-field>
 
+    <!---COLOR-->
     <div
       *ngIf="animationParams[key].type==='color'"
       class="compound-param-container">
       <mat-form-field appearance="outline">
         <mat-label>{{animationParams[key].label}}</mat-label>
-        <mat-select [(ngModel)]="params[key]" (ngModelChange)="onUpdate()">
+        <mat-select [(ngModel)]="customParams[key]" (ngModelChange)="applyCustomColor(key); onUpdate()">
           <mat-option value="black">black</mat-option>
           <mat-option value="white">white</mat-option>
           <mat-option value="#666">gray</mat-option>
-          <mat-option value="customColor">custom color
-          </mat-option>
+          <mat-option value="yellow">yellow</mat-option>
+          <mat-option value="orange">orange</mat-option>
+          <mat-option value="red">red</mat-option>
+          <mat-option value="lightblue">light blue</mat-option>
+          <mat-option value="customColor">custom color</mat-option>
         </mat-select>
       </mat-form-field>
       <ngx-colors
-        *ngIf="params.color === 'customColor'"
+        *ngIf="customParams[key] === 'customColor'"
         class="compound-param-child" ngx-colors-trigger
-        [(ngModel)]="customColor" (ngModelChange)="onUpdate()">
+        [(ngModel)]="params[key]" (ngModelChange)="onUpdate()">
       </ngx-colors>
     </div>
 
+    <!---BOOLEAN-->
     <div
       *ngIf="animationParams[key].type==='boolean'"
       class="compound-param-container slide-toggle__spacing">

@@ -8,7 +8,8 @@ import {MenuService} from "../../shared/services/menu/menu.service";
   styleUrls: ['./titlebar.component.scss']
 })
 export class TitlebarComponent {
-  public drawerVisibility = true
+  public paramsDrawerVisibility = true
+  public menuDrawerVisibility = false
   public version = packageInfo.version
 
   constructor(private menuService: MenuService) {
@@ -22,8 +23,13 @@ export class TitlebarComponent {
     this.menuService.emitShowCode()
   }
 
-  toggleDrawer() {
-    this.drawerVisibility = !this.drawerVisibility
-    this.menuService.setDrawerVisibility(this.drawerVisibility)
+  toggleMenuDrawer() {
+    this.menuDrawerVisibility = !this.menuDrawerVisibility
+    this.menuService.setAppMenuDrawerVisibility(this.menuDrawerVisibility)
+  }
+
+  toggleParamsDrawer() {
+    this.paramsDrawerVisibility = !this.paramsDrawerVisibility
+    this.menuService.setParamsDrawerVisibility(this.paramsDrawerVisibility)
   }
 }

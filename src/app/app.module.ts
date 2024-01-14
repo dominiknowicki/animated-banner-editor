@@ -21,11 +21,14 @@ import {ToastService} from "./shared/services/toast/toast.service";
 import {CodeDialogService} from "./gui/show-code-dialog/code-dialog.service";
 import {MenuService} from "./shared/services/menu/menu.service";
 import {AnimationParamsComponent} from "./gui/params/animation-params/animation-params.component";
+import {AvailableAnimationsService} from "./shared/services/available-animations/available-animations.service";
+import {MenuComponent} from "./gui/menu/menu.component";
 
 @NgModule({
   declarations: [
     AppComponent,
     TitlebarComponent,
+    MenuComponent,
     ParamsComponent,
     AnimationParamsComponent,
     PlaygroundComponent,
@@ -51,6 +54,7 @@ import {AnimationParamsComponent} from "./gui/params/animation-params/animation-
     CodeDialogService,
     ToastService,
     MenuService,
+    AvailableAnimationsService,
   ],
   bootstrap: [AppComponent]
 })

@@ -14,13 +14,12 @@ export class ToastService {
   }
   success(message: string): MatSnackBarRef<any> {
     return  this.snackBar.open(message, 'OK', {
-      duration: 5000,
+      duration: 2000,
       panelClass: ['success-snackbar']
     })
   }
 
   info(message: string): MatSnackBarRef<any> {
-    console.log('info')
     return this.snackBar.open(message, 'OK', {
       duration: 2000,
       panelClass: ['info-snackbar']

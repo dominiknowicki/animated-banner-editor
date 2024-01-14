@@ -1,0 +1,21 @@
+<label class="mdc-button no-margin custom-file-upload">
+  <input id="new-animation-input" type="file" accept="application/javascript, text/javascript" (input)="onAnimationFileUpload($event)">
+  <span
+    class="mdc-button mdc-button__label">
+    Load new animation type
+    </span>
+</label>
+<button
+  mat-stroked-button
+  (click)="showCodeDialog()">Implementation instructions
+</button>
+<!--TODO: nice to have feature?-->
+<!--<button-->
+<!--  mat-stroked-button-->
+<!--  (click)="restartAnimation()">Export animation params in JSON-->
+<!--</button>-->
+<button
+  mat-stroked-button
+  (click)="restartAnimation()">Restart animation
+</button>
+

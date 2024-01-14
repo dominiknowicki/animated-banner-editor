@@ -39,6 +39,13 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   cursor: default;
 }
 
+.cdk-overlay-pane {
+ margin-bottom: 100px !important;
+  .mat-mdc-snack-bar-label {
+    font-size: 18px!important;
+  }
+}
+
 .mat-mdc-snack-bar-container {
   &.success-snackbar {
     --mdc-snackbar-container-color: #4caf50;

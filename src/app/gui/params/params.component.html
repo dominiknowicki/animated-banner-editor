@@ -7,7 +7,7 @@
 <div class="compound-param-container ">
   <mat-form-field appearance="outline">
     <mat-label>Background</mat-label>
-    <mat-select [(ngModel)]="params.background" (ngModelChange)="onUpdate()">
+    <mat-select [(ngModel)]="componentParams.background" (ngModelChange)="onUpdate()">
       <mat-option value="url('assets/media/corollaSedan_1000x750.jpg')">Corolla Sedan</mat-option>
       <mat-option value="url('assets/media/corollaHatchback_1000x750.jpg')">Corolla Hatchback</mat-option>
       <mat-option value="url('assets/media/yarsCross_1000x750.jpg')">Yaris Cross</mat-option>
@@ -19,16 +19,16 @@
     </mat-select>
   </mat-form-field>
   <ngx-colors
-    *ngIf="params.background === 'customBackgroundColor'"
+    *ngIf="componentParams.background === 'customBackgroundColor'"
     class="compound-param-child" ngx-colors-trigger
     [(ngModel)]="customBackgroundColor" (ngModelChange)="onUpdate()">
   </ngx-colors>
-  <label *ngIf="params.background === 'customBackgroundImage'"
+  <label *ngIf="componentParams.background === 'customBackgroundImage'"
          class="no-margin compound-param-child custom-file-upload">
     <input type="file" accept="image/*" (change)="onFileUpload($event)">
     Choose file
   </label>
-  <label *ngIf="params.background === 'customUrlBackgroundImage'"
+  <label *ngIf="componentParams.background === 'customUrlBackgroundImage'"
          class="no-margin compound-param-child custom-file-url-input">
     <input type="text" (change)="onUrlEntered($event)" style="border: none">
   </label>
@@ -38,12 +38,12 @@
 <div class="flex-controls-container">
   <mat-form-field appearance="outline" style="max-width: 120px">
     <mat-label>Width</mat-label>
-    <input matInput type="number" [(ngModel)]="params.width" (ngModelChange)="onUpdate()">
+    <input matInput type="number" [(ngModel)]="componentParams.width" (ngModelChange)="onUpdate()">
   </mat-form-field>
 
   <mat-form-field appearance="outline" style="max-width: 120px">
     <mat-label>Height</mat-label>
-    <input matInput type="number" [(ngModel)]="params.height" (ngModelChange)="onUpdate()">
+    <input matInput type="number" [(ngModel)]="componentParams.height" (ngModelChange)="onUpdate()">
   </mat-form-field>
 
   <div class="compound-param-container" style="max-width: 140px">
@@ -59,31 +59,28 @@
                 fontIcon="information"></mat-icon>
     </div>
     <mat-slide-toggle
-      [(ngModel)]="params.matchParent"
+      [(ngModel)]="componentParams.matchParent"
       (ngModelChange)="onUpdate()">
     </mat-slide-toggle>
   </div>
 </div>
 
 <ng-container
-  *ngFor="let paramsSet of paramsList; let i = index">
-
-  <details
-    [open] = "open[i]">
-    <summary>
+  *ngFor="let paramsSet of componentParams.animations; let i = index">
+  <div>
+    <div
+      style="cursor: pointer"
+      (click)="animationListPanelOpen[i] = !animationListPanelOpen[i]">
       <div style="display:flex;">
-        <mat-icon style="position: relative; top: 7px" >expand_more</mat-icon>
-        <h4 matTooltip="Params of animation - can be different for each animation">
-          Animation params #{{i + 1}}
-          <mat-icon
-            aria-hidden="false" class="tooltip-icon"
-            aria-label="Params of animation - can be different for each animation"
-            fontIcon="information">
-          </mat-icon>
+        <mat-icon
+          [style]="animationListPanelOpen[i] ? 'position: relative; top: 7px' : 'position: relative; top: 7px; transform: rotate(-90deg)'"
+        >expand_more
+        </mat-icon>
+        <h4 style="margin: 7px;">
+          Animation #{{i + 1}}: {{ paramsSet.animationName }}
         </h4>
-
         <button
-          *ngIf="i !== 0"
+          *ngIf="componentParams.animations.length > 1"
           style="position: relative; top: -5px; color: #666"
           mat-icon-button
           (click)="removeAnimation(i)"
@@ -91,15 +88,13 @@
           <mat-icon>delete</mat-icon>
         </button>
       </div>
-    </summary>
-
+    </div>
     <app-animation-params
+      [style]="animationListPanelOpen[i] ? '' : 'display: none'"
       [params]="paramsSet"
-      (onParamsChange)="onParamsChange($event)">
+      (onParamsChange)="onAnimationParamsChange($event)">
     </app-animation-params>
-  </details>
-
+  </div>
 </ng-container>
 
-
-<button mat-stroked-button (click)="addNextAnimation()">Add next animation</button>
+<button mat-stroked-button (click)="addNextAnimation()">Add animation</button>

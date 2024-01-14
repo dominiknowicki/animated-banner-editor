@@ -1,9 +1,8 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core'
 import {Params} from "@angular/router"
-import {DEFAULT_PARAMS} from "../../model/component-params"
+import {ComponentParams, DEFAULT_ANIMATION_PARAMS, DEFAULT_COMPONENT_PARAMS} from "../../model/component-params"
 import {ToastService} from "../../shared/services/toast/toast.service";
 import {CodeDialogService} from "../show-code-dialog/code-dialog.service";
-import {getAnimationName, registerCustomAnimation} from "./params.utils";
 import {MatSnackBarRef} from "@angular/material/snack-bar";
 import {MenuService} from "../../shared/services/menu/menu.service";
 
@@ -14,15 +13,10 @@ import {MenuService} from "../../shared/services/menu/menu.service";
 })
 export class ParamsComponent implements OnInit {
   @Output() paramEmitter = new EventEmitter<object>()
-  public paramsList = [DEFAULT_PARAMS]
-  public open: boolean[] = [true]
-  public params: Params = DEFAULT_PARAMS
-  public animationParams: any
-  public customColor = "red"
+  public componentParams: ComponentParams = DEFAULT_COMPONENT_PARAMS
   public customBackgroundColor = "red"
   public customBackgroundImage: string
-  public animationList: string[] = ['slide-right', 'slide-in-from-left', 'fade-in-out', 'slide-right-object']
-
+  public animationListPanelOpen: boolean[] = [true]
 
   constructor(
     public codeDialog: CodeDialogService,
@@ -33,54 +27,22 @@ export class ParamsComponent implements OnInit {
     this.menuService.getShowCodeSubject.subscribe(_ => this.openShowCodeDialog())
   }
 
-  get animationParamsKeys(): string[] {
-    return Object.keys(this.animationParams)
-  }
-
   ngOnInit(): void {
-    this.setAnimationParamsListener()
-    this.getAnimationParams()
     this.restartAnimation()
   }
 
-  private setAnimationParamsListener(): void {
-    // Listen to answer event from animation
-    window.addEventListener('selected-animation-params', (event: any) => {
-      this.animationParams = event.detail
-      for (const key in this.animationParams) {
-        if (!this.params.hasOwnProperty(key)) {
-          this.params[key] = this.animationParams[key].default
-        }
-      }
-      console.log('Custom params provided by animation: ', this.animationParams);
-    });
-  }
-
-  getAnimationParams(): void {
-    // Ask animation for params
-    window.dispatchEvent(new CustomEvent(`get-${this.params.animation}-params`))
-  }
-
-  // TODO: rozdzielic parametry komponentu (background,wymiary, matchparent) od parametrow animacji
-  // TODO: text wprowadzic do parametrow animacji
-  onParamsChange(data: any): void {
-    console.log('Params changed: ', data)
-    for (const key in data) {
-      if (data.hasOwnProperty(key)) {
-        this.params[key] = data[key]
-      }
-    }
+  onAnimationParamsChange(animationParams: any): void {
+    console.log('Animation Params changed and passed to params.component: ', animationParams)
     this.onUpdate()
   }
 
   onUpdate(): void {
-    this.paramEmitter.emit(this.applyCustomParams(this.params))
+    this.paramEmitter.emit(this.applyCustomParams(this.componentParams))
   }
 
   applyCustomParams(params: Params): Params {
     let updatedParams = {...params}
-    updatedParams.color = (this.params.color === 'customColor') ? this.customColor : this.params.color
-    switch (this.params.background) {
+    switch (this.componentParams.background) {
       case 'customBackgroundColor':
         updatedParams.background = this.customBackgroundColor
         break
@@ -89,7 +51,7 @@ export class ParamsComponent implements OnInit {
         updatedParams.background = `url('${this.customBackgroundImage}')`
         break
       default:
-        updatedParams.background = this.params.background
+        updatedParams.background = this.componentParams.background
     }
     return updatedParams
   }
@@ -120,8 +82,8 @@ export class ParamsComponent implements OnInit {
       return this.toast.error('File too large - please use smaller one')
     }
     // setting width and height of canvas to match image
-    this.params.width = image.width
-    this.params.height = image.height
+    this.componentParams.width = image.width
+    this.componentParams.height = image.height
     this.customBackgroundImage = image.src
     this.onUpdate()
   }
@@ -131,40 +93,20 @@ export class ParamsComponent implements OnInit {
   }
 
   openShowCodeDialog(): void {
-    const paramsToDisplay: Params = this.applyCustomParams(this.params)
+    const paramsToDisplay: Params = this.applyCustomParams(this.componentParams)
     this.codeDialog.open(paramsToDisplay)
   }
 
-  onAnimationFileUpload(event: any): void {
-    const file = event.target.files[0]
-    const reader = new FileReader()
-    reader.onload = () => this.onAnimationFileLoaded(reader.result as string)
-    reader.readAsText(file)
-  }
-
-  onAnimationFileLoaded(data: string): void {
-    if (data) registerCustomAnimation(data)
-      .then((animationCode: string) => getAnimationName(animationCode))
-      .then((animationName: string) => this.selectCustomAnimation(animationName))
-      .then((animationName: string) => this.toast.success(`Animation ${animationName} added`))
-      .catch((_: any) => this.toast.error('Error adding animation - try again with different file!'))
-  }
-
-  selectCustomAnimation(animationName: string): Promise<string> {
-    if (!animationName) return Promise.reject(null)
-    this.animationList.unshift(animationName)
-    this.params.animation = animationName
-    this.onUpdate()
-    this.getAnimationParams()
-    this.restartAnimation()
-    return Promise.resolve(animationName)
-  }
-
   addNextAnimation(): void {
-    this.paramsList.push(DEFAULT_PARAMS)
+    this.componentParams.animations.push({...DEFAULT_ANIMATION_PARAMS})
+    this.animationListPanelOpen.push(true)
+    setTimeout(()=> {
+      const element = document.getElementById('app-params')
+      element.scrollBy({behavior: 'smooth', top:element.scrollHeight})
+    }, 100)
   }
 
   removeAnimation(index: number): void {
-    this.paramsList.splice(index, 1)
+    this.componentParams.animations.splice(index, 1)
   }
 }

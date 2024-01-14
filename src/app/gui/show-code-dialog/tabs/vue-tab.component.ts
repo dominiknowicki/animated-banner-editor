@@ -12,7 +12,8 @@ export class VueTabComponent {
   @Input() data: ComponentParams
   public stencilUrl: string = "https://stenciljs.com/docs/vue"
   public get link2(): string {
-    return `<script type='module' src='https://unpkg.com/browse/animated-banner@${packageInfo.version}/dist/animations/${this.data.animation}.js'></script>`
+    // TODO: print all animations names
+    return `<script type='module' src='https://unpkg.com/browse/animated-banner@${packageInfo.version}/dist/animations/${this.data.animations[0]}.js'></script>`
   }
 
   constructor(
@@ -22,7 +23,7 @@ export class VueTabComponent {
 
   public copy(text): void {
     copyToClipboard(text)
-    this.toast.info('Copied to clipboard!')
+    this.toast.success('Copied to clipboard!')
   }
 
   public openUrl(url: string): void {
